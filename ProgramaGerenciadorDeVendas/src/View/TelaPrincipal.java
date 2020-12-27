@@ -6,10 +6,17 @@
 package View;
 
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author T-Gamer
+ */
+
+/*
+    * AUTORIAS DE MATERIAIS UTILIZADOS:
+    * Ícone "OperacaoConcluida.png" -> https://www.flaticon.com/br/icone-gratis/ok_1484608?term=ok&page=1&position=20&related_item_id=1484608
+    *
  */
 public class TelaPrincipal extends javax.swing.JFrame {
 
@@ -18,6 +25,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
      */
     public TelaPrincipal() {
         initComponents();
+        //limparInformacoes();
     }
 
     /**
@@ -135,11 +143,18 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void jBtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCancelarActionPerformed
         // CÓDIGO DO BOTÃO "CANCELAR":
-        jTxtNomeCliente.setText("");
-        /* Precisa limpar a tabela*/
-        
+        if (JOptionPane.showConfirmDialog(this, "Deseja limpar TODOS os campos?") == JOptionPane.YES_OPTION) {
+            limparInformacoes();
+            JOptionPane.showMessageDialog(this, "Informações apagadas!", "OPERAÇÃO CONCLUÍDA!", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Nenhuma informação foi alterada!", "ALERTA!", 2);
+        }
     }//GEN-LAST:event_jBtnCancelarActionPerformed
-
+    private void limparInformacoes() {
+        DefaultTableModel jTbProdutos_objeto = (DefaultTableModel) this.jTbProdutos.getModel();
+        jTbProdutos_objeto.setNumRows(0);
+        jTxtNomeCliente.setText("");
+    }
     private void jBtnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnImprimirActionPerformed
         // CÓDIGO DO BOTÃO "IMPRIMIR":
         JOptionPane.showMessageDialog(this, "Você clicou no botão para imprimir");
@@ -159,16 +174,21 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaPrincipal.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaPrincipal.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaPrincipal.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaPrincipal.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
