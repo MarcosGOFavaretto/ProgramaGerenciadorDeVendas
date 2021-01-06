@@ -157,7 +157,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
     private void jBtnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnImprimirActionPerformed
         // CÓDIGO DO BOTÃO "IMPRIMIR":
-        JOptionPane.showMessageDialog(this, "Você clicou no botão para imprimir");
+
+        if (JOptionPane.showConfirmDialog(this, "Deseja imprimir a lista de produtos?", "IMPRIMIR?!", JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION) {
+            JOptionPane.showMessageDialog(this, "Arquivo enviado para a impressora!", "OPERAÇÃO CONCLUÍDA!", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Arquivo PDF gerado!", "OPERAÇÃO CONCLUÍDA!", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_jBtnImprimirActionPerformed
 
     /**
