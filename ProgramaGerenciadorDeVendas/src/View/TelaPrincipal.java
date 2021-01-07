@@ -38,13 +38,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jBtnImprimir = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTbProdutos = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jTxtNomeCliente = new javax.swing.JTextField();
+        jBtnInserirManualmente = new javax.swing.JButton();
         jBtnCancelar = new javax.swing.JButton();
+        jBtnSalvar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PROGRAMA GERENCIADOR DE VENDAS");
@@ -53,38 +54,46 @@ public class TelaPrincipal extends javax.swing.JFrame {
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setExtendedState(6);
         setName("TelaPrincipal"); // NOI18N
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel1.setText("PROGRAMA GERENCIADOR DE VENDAS");
-
-        jBtnImprimir.setText("IMPRIMIR");
-        jBtnImprimir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBtnImprimirActionPerformed(evt);
-            }
-        });
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 720, -1));
 
         jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
         jSeparator1.setToolTipText("");
+        getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 50, 716, 22));
 
         jTbProdutos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Nome do produto", "Quantidade"
+                "Nome do produto", "Fabricante", "Quantidade"
             }
         ));
         jScrollPane1.setViewportView(jTbProdutos);
 
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 80, 716, 508));
+
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel2.setText("NOME COMPLETO DO CLIENTE:");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 590, -1, -1));
 
         jTxtNomeCliente.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jTxtNomeCliente.setText("Marcos Gabriel de Oliveira Favaretto");
+        getContentPane().add(jTxtNomeCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 620, 716, -1));
+
+        jBtnInserirManualmente.setText("INSERIR MANUALMENTE");
+        jBtnInserirManualmente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnInserirManualmenteActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jBtnInserirManualmente, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 620, -1, -1));
 
         jBtnCancelar.setText("CANCELAR");
         jBtnCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -92,56 +101,21 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 jBtnCancelarActionPerformed(evt);
             }
         });
+        getContentPane().add(jBtnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 590, 151, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(312, 312, 312)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTxtNomeCliente)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jSeparator1))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGap(157, 157, 157)
-                        .addComponent(jBtnCancelar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jBtnImprimir)))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 626, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jBtnImprimir)
-                    .addComponent(jTxtNomeCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jBtnCancelar))
-                .addContainerGap())
-        );
+        jBtnSalvar.setText("SALVAR");
+        jBtnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnSalvarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jBtnSalvar, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 560, 150, -1));
 
-        setSize(new java.awt.Dimension(1383, 807));
+        setSize(new java.awt.Dimension(1096, 759));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jBtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCancelarActionPerformed
+    private void jBtnInserirManualmenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnInserirManualmenteActionPerformed
         // CÓDIGO DO BOTÃO "CANCELAR":
         if (JOptionPane.showConfirmDialog(this, "Deseja limpar TODOS os campos?") == JOptionPane.YES_OPTION) {
             limparInformacoes();
@@ -149,13 +123,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Nenhuma informação foi alterada!", "ALERTA!", 2);
         }
-    }//GEN-LAST:event_jBtnCancelarActionPerformed
+    }//GEN-LAST:event_jBtnInserirManualmenteActionPerformed
     private void limparInformacoes() {
         DefaultTableModel jTbProdutos_objeto = (DefaultTableModel) this.jTbProdutos.getModel();
         jTbProdutos_objeto.setNumRows(0);
         jTxtNomeCliente.setText("");
     }
-    private void jBtnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnImprimirActionPerformed
+    private void jBtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCancelarActionPerformed
         // CÓDIGO DO BOTÃO "IMPRIMIR":
 
         if (JOptionPane.showConfirmDialog(this, "Deseja imprimir a lista de produtos?", "IMPRIMIR?!", JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION) {
@@ -163,7 +137,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Arquivo PDF gerado!", "OPERAÇÃO CONCLUÍDA!", JOptionPane.INFORMATION_MESSAGE);
         }
-    }//GEN-LAST:event_jBtnImprimirActionPerformed
+    }//GEN-LAST:event_jBtnCancelarActionPerformed
+
+    private void jBtnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSalvarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jBtnSalvarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -207,7 +185,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBtnCancelar;
-    private javax.swing.JButton jBtnImprimir;
+    private javax.swing.JButton jBtnInserirManualmente;
+    private javax.swing.JButton jBtnSalvar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
