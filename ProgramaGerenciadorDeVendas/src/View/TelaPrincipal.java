@@ -10,7 +10,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author T-Gamer
+ * @author Marcos Gabriel de Oliveira Favaretto
  */
 
 /*
@@ -116,13 +116,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBtnInserirManualmenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnInserirManualmenteActionPerformed
-        // CÓDIGO DO BOTÃO "CANCELAR":
-        if (JOptionPane.showConfirmDialog(this, "Deseja limpar TODOS os campos?") == JOptionPane.YES_OPTION) {
-            limparInformacoes();
-            JOptionPane.showMessageDialog(this, "Informações apagadas!", "OPERAÇÃO CONCLUÍDA!", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(this, "Nenhuma informação foi alterada!", "ALERTA!", 2);
-        }
+        // CÓDIGO DO BOTÃO "INSERIR MANUALMENTE":
+        TelaInsercaoManual telaInsercaoManual_objeto = new TelaInsercaoManual();
+        telaInsercaoManual_objeto.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_jBtnInserirManualmenteActionPerformed
     private void limparInformacoes() {
         DefaultTableModel jTbProdutos_objeto = (DefaultTableModel) this.jTbProdutos.getModel();
@@ -130,17 +127,24 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jTxtNomeCliente.setText("");
     }
     private void jBtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCancelarActionPerformed
-        // CÓDIGO DO BOTÃO "IMPRIMIR":
+
+        // CÓDIGO DO BOTÃO "CANCELAR":
+        if (JOptionPane.showConfirmDialog(this, "Deseja limpar TODOS os campos?") == JOptionPane.YES_OPTION) {
+            limparInformacoes();
+            JOptionPane.showMessageDialog(this, "Informações apagadas!", "OPERAÇÃO CONCLUÍDA!", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Nenhuma informação foi alterada!", "ALERTA!", 2);
+        }
+    }//GEN-LAST:event_jBtnCancelarActionPerformed
+
+    private void jBtnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSalvarActionPerformed
+        // CÓDIGO DO BOTÃO "SALVAR":
 
         if (JOptionPane.showConfirmDialog(this, "Deseja imprimir a lista de produtos?", "IMPRIMIR?!", JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION) {
             JOptionPane.showMessageDialog(this, "Arquivo enviado para a impressora!", "OPERAÇÃO CONCLUÍDA!", JOptionPane.INFORMATION_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(this, "Arquivo PDF gerado!", "OPERAÇÃO CONCLUÍDA!", JOptionPane.INFORMATION_MESSAGE);
         }
-    }//GEN-LAST:event_jBtnCancelarActionPerformed
-
-    private void jBtnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSalvarActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_jBtnSalvarActionPerformed
 
     /**
