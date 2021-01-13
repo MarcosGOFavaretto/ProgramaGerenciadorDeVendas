@@ -1,10 +1,14 @@
 package Controller;
 
+import Model.BuscarProduto;
+import java.sql.ResultSet;
+
 public class ProdutosClass {
 
     private String nomeProduto;
     private String fabricanteProduto;
     private float quantidadeProduto;
+    BuscarProduto objeto_buscarproduto = new BuscarProduto();
 
     public String getNomeProduto() {
         return nomeProduto;
@@ -30,7 +34,13 @@ public class ProdutosClass {
         this.quantidadeProduto = quantidadeProduto;
     }
 
-    public void buscarProduto() {
-        // Código do método que iniciará a busca no banco de dados
+    public void buscarProduto(String codigoProduto) {
+        // Código do método que iniciará a busca no banco de dados.
+        ResultSet resultset_buscarproduto = objeto_buscarproduto.BuscarProduto(codigoProduto);
+        inserirProduto(resultset_buscarproduto);
+    }
+    
+    public void inserirProduto(ResultSet resultset_buscarproduto){
+        // Código do método que adicionará uma nova linha à tabela.
     }
 }
