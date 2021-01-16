@@ -34,13 +34,10 @@ public class ProdutosClass {
         this.quantidadeProduto = quantidadeProduto;
     }
 
-    public void buscarProduto(String codigoProduto) {
+    public ResultSet buscarProdutoNoBanco(int codigoProduto) {
         // Código do método que iniciará a busca no banco de dados.
-        ResultSet resultset_buscarproduto = objeto_buscarproduto.BuscarProduto(codigoProduto);
-        inserirProduto(resultset_buscarproduto);
-    }
-    
-    public void inserirProduto(ResultSet resultset_buscarproduto){
-        // Código do método que adicionará uma nova linha à tabela.
+        ResultSet resultset_buscarproduto = null;
+        resultset_buscarproduto = objeto_buscarproduto.BuscarProduto(codigoProduto);
+        return resultset_buscarproduto;
     }
 }

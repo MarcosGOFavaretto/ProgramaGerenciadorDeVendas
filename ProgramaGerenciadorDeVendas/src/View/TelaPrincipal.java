@@ -1,10 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package View;
 
+import Controller.ProdutosClass;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -22,10 +22,26 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     /**
      * Creates new form TelaPrincipal
+     *
+     * @throws java.sql.SQLException
      */
-    public TelaPrincipal() {
+    public TelaPrincipal() throws SQLException {
         initComponents();
         //limparInformacoes();
+        int leituraatual = 1;
+        ProdutosClass objeto_produtoclass = new ProdutosClass();
+        ResultSet resultset_produtoparainserir = objeto_produtoclass.buscarProdutoNoBanco(leituraatual);
+        DefaultTableModel objeto_tabela = (DefaultTableModel) jTbProdutos.getModel();
+        objeto_tabela.setNumRows(0);
+        while (resultset_produtoparainserir.next()) {
+            objeto_tabela.addRow(
+                    new Object[]{
+                        resultset_produtoparainserir.getInt("nome_produto"),
+                        resultset_produtoparainserir.getString("fabricante_produto"),
+                        String.valueOf(objeto_produtoclass.getQuantidadeProduto())
+                    }
+            );
+        }
     }
 
     /**
@@ -184,7 +200,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaPrincipal().setVisible(true);
+                try {
+                    new TelaPrincipal().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

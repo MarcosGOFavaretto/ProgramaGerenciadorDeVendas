@@ -1,5 +1,9 @@
 package View;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -91,9 +95,15 @@ public class TelaInsercaoManual extends javax.swing.JFrame {
 
     private void jTxtVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtVoltarActionPerformed
         // CÓDIGO DO BOTÃO "VOLTAR":
-        TelaPrincipal telaPrincipal_objeto = new TelaPrincipal();
-        telaPrincipal_objeto.setVisible(true);
+        try {
+            TelaPrincipal telaPrincipal_objeto;
+            telaPrincipal_objeto = new TelaPrincipal();
+            telaPrincipal_objeto.setVisible(true);
         this.setVisible(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(TelaInsercaoManual.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }//GEN-LAST:event_jTxtVoltarActionPerformed
 
     /**
