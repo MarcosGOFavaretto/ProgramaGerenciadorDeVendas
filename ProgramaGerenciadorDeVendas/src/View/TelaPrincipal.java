@@ -72,6 +72,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(1080, 720));
         setName("TelaPrincipal"); // NOI18N
         setPreferredSize(new java.awt.Dimension(1080, 720));
+        setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
