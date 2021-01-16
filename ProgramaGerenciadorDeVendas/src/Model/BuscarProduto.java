@@ -13,7 +13,7 @@ public class BuscarProduto {
 
     public ResultSet BuscarProduto(int codigoProduto) {
         try {
-            sql_buscarproduto = "SELECT * FROM produtos WHERE cod_prod=?";
+            sql_buscarproduto = "SELECT * FROM produtos WHERE cod_produto=?";
             objeto_conexaobancodedados.AbrirConexao();
             statement_buscarproduto = objeto_conexaobancodedados.conexao.prepareStatement(sql_buscarproduto);
             statement_buscarproduto.setInt(1,codigoProduto);

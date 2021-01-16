@@ -44,6 +44,7 @@ public class TelaInsercaoManual extends javax.swing.JFrame {
         jTxtVoltar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("INSERÇÃO MANUAL");
         setMaximumSize(new java.awt.Dimension(600, 400));
         setMinimumSize(new java.awt.Dimension(600, 400));
         setName("TelaInsercaoManual"); // NOI18N

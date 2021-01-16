@@ -1,8 +1,22 @@
 package View;
 
+import Controller.ClientesClass;
 import Controller.ProdutosClass;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.Desktop;
+import java.io.Console;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -25,9 +39,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
      *
      * @throws java.sql.SQLException
      */
+    String nomeDoArquivo = "";
     public TelaPrincipal() throws SQLException {
         initComponents();
         //limparInformacoes();
+        
         int leituraatual = 1;
         ProdutosClass objeto_produtoclass = new ProdutosClass();
         ResultSet resultset_produtoparainserir = objeto_produtoclass.buscarProdutoNoBanco(leituraatual);
@@ -68,7 +84,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
         setAlwaysOnTop(true);
         setBackground(new java.awt.Color(0, 0, 0));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setExtendedState(6);
         setMinimumSize(new java.awt.Dimension(1080, 720));
         setName("TelaPrincipal"); // NOI18N
         setPreferredSize(new java.awt.Dimension(1080, 720));
@@ -134,6 +149,36 @@ public class TelaPrincipal extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private String criarNomeDoArquivo() {
+        ClientesClass objeto_clientesclass = new ClientesClass();
+        Date dataatual = new Date();
+        SimpleDateFormat mascara_dia = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat mascara_horas = new SimpleDateFormat("HH-mm-ss");
+        String[] array_dataatual = mascara_dia.format(dataatual).split("-");
+        String[] array_horarioatual = mascara_horas.format(dataatual).split("-");
+
+        Calendar cal = Calendar.getInstance();
+
+        cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(array_dataatual[0]));
+        cal.set(Calendar.MONTH, Integer.parseInt(array_dataatual[1]) - 1);
+        cal.set(Calendar.YEAR, Integer.parseInt(array_dataatual[2]));
+        cal.set(Calendar.HOUR, Integer.parseInt(array_horarioatual[0]) + 12);
+        cal.set(Calendar.MINUTE, Integer.parseInt(array_horarioatual[1]));
+        cal.set(Calendar.SECOND, Integer.parseInt(array_horarioatual[2]));
+        dataatual = cal.getTime();
+
+        objeto_clientesclass.setNome_cliente("Robson Pereira Alameda");
+        String nomeArquivoPDFSaida = mascara_dia.format(dataatual) + " às " + mascara_horas.format(dataatual) + " - " + objeto_clientesclass.getNome_cliente() + ".pdf";
+        return nomeArquivoPDFSaida;
+    }
+
+    private void abrirPDF() {
+        try {
+            Desktop.getDesktop().open(new File(this.nomeDoArquivo));
+        } catch (IOException erro_abrirpdf) {
+            System.err.println("Problema ao tentar abrir o arquivo em formato PDF, ERRO: " + erro_abrirpdf);;
+        }
+    }
     private void jBtnInserirManualmenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnInserirManualmenteActionPerformed
         // CÓDIGO DO BOTÃO "INSERIR MANUALMENTE":
         TelaInsercaoManual telaInsercaoManual_objeto = new TelaInsercaoManual();
@@ -141,9 +186,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_jBtnInserirManualmenteActionPerformed
     private void limparInformacoes() {
+        String stringVazia = "";
         DefaultTableModel jTbProdutos_objeto = (DefaultTableModel) this.jTbProdutos.getModel();
         jTbProdutos_objeto.setNumRows(0);
-        jTxtNomeCliente.setText("");
+        jTxtNomeCliente.setText(stringVazia);
     }
     private void jBtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCancelarActionPerformed
 
@@ -158,11 +204,27 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void jBtnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSalvarActionPerformed
         // CÓDIGO DO BOTÃO "SALVAR":
+        Document objeto_document = new Document();
+        nomeDoArquivo = criarNomeDoArquivo();
+        try {
+            PdfWriter.getInstance(objeto_document, new FileOutputStream(nomeDoArquivo));
+            objeto_document.open();
+            objeto_document.addAuthor("Sistema Gerenciador De Vendas");
+            objeto_document.addLanguage("pt-br");
+            objeto_document.addTitle("LISTA DE SAÍDA DE PRODUTOS");
+            objeto_document.add(new Paragraph("Este é um teste de parágrafo para avaliar o funcionamento da classe iText que foi baixada na internet"));
+            objeto_document.addCreationDate();
+        } catch (FileNotFoundException | DocumentException erro_gerarpdf) {
+            System.err.println("Problema ao tentar gerar o arquivo em formato PDF, ERRO: " + erro_gerarpdf);
+        } finally {
+            objeto_document.close();
+        }
 
         if (JOptionPane.showConfirmDialog(this, "Deseja imprimir a lista de produtos?", "IMPRIMIR?!", JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION) {
             JOptionPane.showMessageDialog(this, "Arquivo enviado para a impressora!", "OPERAÇÃO CONCLUÍDA!", JOptionPane.INFORMATION_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(this, "Arquivo PDF gerado!", "OPERAÇÃO CONCLUÍDA!", JOptionPane.INFORMATION_MESSAGE);
+            abrirPDF();
         }
     }//GEN-LAST:event_jBtnSalvarActionPerformed
 
@@ -209,6 +271,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
     }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBtnCancelar;
