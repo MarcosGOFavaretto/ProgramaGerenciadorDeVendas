@@ -7,7 +7,6 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Desktop;
-import java.io.Console;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -24,7 +23,17 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author Marcos Gabriel de Oliveira Favaretto
+ * Classe responsável por exibir a tela principal da aplicação. Nesta, o usuário
+ * irá informar o nome do cliente e inserir os produtos que farão parte daquela
+ * lista de saída. Além disso, ela possibilita que os campos sejam limpos, que
+ * as informações informadas pelo usuário sejam salvas e que a janela de
+ * inserção manual possa ser aberta.
+ *
+ *
+ * @author Marcos Gabriel de Oliveira Favaretto | Favaretto DEV copyright email:
+ * contato@favaretto.dev.br
+ * @version 1.0
+ * @since 2020-09-21
  */
 
 /*
@@ -37,13 +46,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
     /**
      * Creates new form TelaPrincipal
      *
-     * @throws java.sql.SQLException
      */
     String nomeDoArquivo = "";
+
     public TelaPrincipal() throws SQLException {
         initComponents();
         //limparInformacoes();
-        
+
         int leituraatual = 1;
         ProdutosClass objeto_produtoclass = new ProdutosClass();
         ResultSet resultset_produtoparainserir = objeto_produtoclass.buscarProdutoNoBanco(leituraatual);
@@ -179,20 +188,21 @@ public class TelaPrincipal extends javax.swing.JFrame {
             System.err.println("Problema ao tentar abrir o arquivo em formato PDF, ERRO: " + erro_abrirpdf);;
         }
     }
-    private void jBtnInserirManualmenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnInserirManualmenteActionPerformed
-        // CÓDIGO DO BOTÃO "INSERIR MANUALMENTE":
-        TelaInsercaoManual telaInsercaoManual_objeto = new TelaInsercaoManual();
-        telaInsercaoManual_objeto.setVisible(true);
-        this.setVisible(false);
-    }//GEN-LAST:event_jBtnInserirManualmenteActionPerformed
+
     private void limparInformacoes() {
         String stringVazia = "";
         DefaultTableModel jTbProdutos_objeto = (DefaultTableModel) this.jTbProdutos.getModel();
         jTbProdutos_objeto.setNumRows(0);
         jTxtNomeCliente.setText(stringVazia);
     }
-    private void jBtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCancelarActionPerformed
+    private void jBtnInserirManualmenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnInserirManualmenteActionPerformed
+        // CÓDIGO DO BOTÃO "INSERIR MANUALMENTE":
+        TelaInsercaoManual telaInsercaoManual_objeto = new TelaInsercaoManual();
+        telaInsercaoManual_objeto.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jBtnInserirManualmenteActionPerformed
 
+    private void jBtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCancelarActionPerformed
         // CÓDIGO DO BOTÃO "CANCELAR":
         if (JOptionPane.showConfirmDialog(this, "Deseja limpar TODOS os campos?") == JOptionPane.YES_OPTION) {
             limparInformacoes();
