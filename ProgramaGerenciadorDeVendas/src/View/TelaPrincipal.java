@@ -4,8 +4,12 @@ import Controller.ClientesClass;
 import Controller.ProdutosClass;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,41 +25,20 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * Classe responsável por exibir a tela principal da aplicação. Nesta, o usuário
- * irá informar o nome do cliente e inserir os produtos que farão parte daquela
- * lista de saída. Além disso, ela possibilita que os campos sejam limpos, que
- * as informações informadas pelo usuário sejam salvas e que a janela de
- * inserção manual possa ser aberta.
- *
- *
- * @author Marcos Gabriel de Oliveira Favaretto | Favaretto DEV copyright email:
- * contato@favaretto.dev.br
- * @version 1.0
- * @since 2020-09-21
- */
-
-/*
-    * AUTORIAS DE MATERIAIS UTILIZADOS:
-    * Ícone "OperacaoConcluida.png" -> https://www.flaticon.com/br/icone-gratis/ok_1484608?term=ok&page=1&position=20&related_item_id=1484608
-    *
- */
 public class TelaPrincipal extends javax.swing.JFrame {
 
-    /**
-     * Creates new form TelaPrincipal
-     *
-     */
-    String nomeDoArquivo = "";
+    // VARIÁVEIS GLOBAIS DA CLASSE:
+    private String nomeDoArquivo = "";
+    private ProdutosClass objeto_produtoclass = null;
+    private ResultSet resultset_produtoparainserir = null;
 
     public TelaPrincipal() throws SQLException {
         initComponents();
-        //limparInformacoes();
 
-        int leituraatual = 1;
-        ProdutosClass objeto_produtoclass = new ProdutosClass();
-        ResultSet resultset_produtoparainserir = objeto_produtoclass.buscarProdutoNoBanco(leituraatual);
+        //limparInformacoes();
+        int leituraatual = 1; // Variável que simula o código lido pelo leitor de código de barras.
+        objeto_produtoclass = new ProdutosClass();
+        resultset_produtoparainserir = objeto_produtoclass.buscarProdutoNoBanco(leituraatual);
         DefaultTableModel objeto_tabela = (DefaultTableModel) jTbProdutos.getModel();
         objeto_tabela.setNumRows(0);
         while (resultset_produtoparainserir.next()) {
@@ -195,6 +178,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jTbProdutos_objeto.setNumRows(0);
         jTxtNomeCliente.setText(stringVazia);
     }
+
     private void jBtnInserirManualmenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnInserirManualmenteActionPerformed
         // CÓDIGO DO BOTÃO "INSERIR MANUALMENTE":
         TelaInsercaoManual telaInsercaoManual_objeto = new TelaInsercaoManual();
@@ -212,6 +196,20 @@ public class TelaPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jBtnCancelarActionPerformed
 
+    private PdfPTable criarCabecalhoDaTabelaEmPdf() {
+        PdfPTable objeto_tabela = new PdfPTable(new float[]{10f, 5f, 3f});
+        PdfPCell objeto_celula_nome_produto = new PdfPCell(new Phrase("Nome do produto"));
+        objeto_celula_nome_produto.setHorizontalAlignment(Element.ALIGN_CENTER);
+        PdfPCell objeto_celula_fabricante = new PdfPCell(new Phrase("Fabricante"));
+        objeto_celula_fabricante.setHorizontalAlignment(Element.ALIGN_CENTER);
+        PdfPCell objeto_celula_quantidade = new PdfPCell(new Phrase("Quantidade"));
+        objeto_celula_quantidade.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+        objeto_tabela.addCell(objeto_celula_nome_produto);
+        objeto_tabela.addCell(objeto_celula_fabricante);
+        objeto_tabela.addCell(objeto_celula_quantidade);
+        return objeto_tabela;
+    }
     private void jBtnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSalvarActionPerformed
         // CÓDIGO DO BOTÃO "SALVAR":
         Document objeto_document = new Document();
@@ -222,8 +220,24 @@ public class TelaPrincipal extends javax.swing.JFrame {
             objeto_document.addAuthor("Sistema Gerenciador De Vendas");
             objeto_document.addLanguage("pt-br");
             objeto_document.addTitle("LISTA DE SAÍDA DE PRODUTOS");
-            objeto_document.add(new Paragraph("Este é um teste de parágrafo para avaliar o funcionamento da classe iText que foi baixada na internet"));
             objeto_document.addCreationDate();
+            // CONTEÚDO DO ARQUIVO:
+            objeto_document.add(new Paragraph("Este é um teste de parágrafo para avaliar o funcionamento da classe iText que foi baixada na internet"));
+            PdfPTable tabela_objeto = this.criarCabecalhoDaTabelaEmPdf();
+            if (objeto_document.isOpen()) {
+                PdfPCell celula1 = new PdfPCell(new Phrase("Caneta Preta"));
+                celula1.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                PdfPCell celula2 = new PdfPCell(new Phrase("BIC"));
+                celula2.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                PdfPCell celula3 = new PdfPCell(new Phrase("50"));
+                celula3.setHorizontalAlignment(Element.ALIGN_RIGHT);
+
+                tabela_objeto.addCell(celula1);
+                tabela_objeto.addCell(celula2);
+                tabela_objeto.addCell(celula3);
+            }
+            objeto_document.add(tabela_objeto);
+            
         } catch (FileNotFoundException | DocumentException erro_gerarpdf) {
             System.err.println("Problema ao tentar gerar o arquivo em formato PDF, ERRO: " + erro_gerarpdf);
         } finally {
