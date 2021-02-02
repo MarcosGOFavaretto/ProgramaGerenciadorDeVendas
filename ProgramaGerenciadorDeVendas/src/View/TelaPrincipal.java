@@ -5,6 +5,7 @@ import Controller.ProdutosClass;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -31,10 +32,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private String nomeDoArquivo = "";
     private ProdutosClass objeto_produtoclass = null;
     private ResultSet resultset_produtoparainserir = null;
+    String[] array_dataatual = null;
+    String[] array_horarioatual = null;
+    SimpleDateFormat mascara_dia = null;
+    SimpleDateFormat mascara_horas = null;
+    Date dataatual = null;
 
     public TelaPrincipal() throws SQLException {
         initComponents();
-
         //limparInformacoes();
         int leituraatual = 1; // Variável que simula o código lido pelo leitor de código de barras.
         objeto_produtoclass = new ProdutosClass();
@@ -141,13 +146,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private String criarNomeDoArquivo() {
-        ClientesClass objeto_clientesclass = new ClientesClass();
-        Date dataatual = new Date();
-        SimpleDateFormat mascara_dia = new SimpleDateFormat("dd-MM-yyyy");
-        SimpleDateFormat mascara_horas = new SimpleDateFormat("HH-mm-ss");
-        String[] array_dataatual = mascara_dia.format(dataatual).split("-");
-        String[] array_horarioatual = mascara_horas.format(dataatual).split("-");
+    private void obterDataHorarioAtual() {
+        dataatual = new Date();
+        mascara_dia = new SimpleDateFormat("dd-MM-yyyy");
+        mascara_horas = new SimpleDateFormat("HH-mm-ss");
+        array_dataatual = mascara_dia.format(dataatual).split("-");
+        array_horarioatual = mascara_horas.format(dataatual).split("-");
 
         Calendar cal = Calendar.getInstance();
 
@@ -158,8 +162,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         cal.set(Calendar.MINUTE, Integer.parseInt(array_horarioatual[1]));
         cal.set(Calendar.SECOND, Integer.parseInt(array_horarioatual[2]));
         dataatual = cal.getTime();
+    }
 
-        objeto_clientesclass.setNome_cliente("Robson Pereira Alameda");
+    private String criarNomeDoArquivo() {
+        obterDataHorarioAtual();
+        ClientesClass objeto_clientesclass = new ClientesClass();
         String nomeArquivoPDFSaida = mascara_dia.format(dataatual) + " às " + mascara_horas.format(dataatual) + " - " + objeto_clientesclass.getNome_cliente() + ".pdf";
         return nomeArquivoPDFSaida;
     }
@@ -168,7 +175,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         try {
             Desktop.getDesktop().open(new File(this.nomeDoArquivo));
         } catch (IOException erro_abrirpdf) {
-            System.err.println("Problema ao tentar abrir o arquivo em formato PDF, ERRO: " + erro_abrirpdf);;
+            System.err.println("Problema ao tentar abrir o arquivo em formato PDF, ERRO: " + erro_abrirpdf);
         }
     }
 
@@ -212,19 +219,36 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
     private void jBtnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSalvarActionPerformed
         // CÓDIGO DO BOTÃO "SALVAR":
+        ClientesClass objeto_clientesclass = new ClientesClass();
+        objeto_clientesclass.setNome_cliente("Robson Pereira Alameda");
         Document objeto_document = new Document();
         nomeDoArquivo = criarNomeDoArquivo();
+        // Criando as fontes:
+        Font objeto_font_cabecalho = new Font(Font.FontFamily.TIMES_ROMAN, 20, Font.BOLD);
+        Font objeto_font_padrao = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL);
+        Paragraph objeto_paragraph_cabecalho = new Paragraph("LISTA DE SAÍDA DE PRODUTOS", objeto_font_cabecalho);
+        objeto_paragraph_cabecalho.setAlignment(Element.ALIGN_CENTER);
+        Paragraph objeto_paragraph_padrao = new Paragraph("Este arquivo foi gerado de forma autônoma através do sistema Programa Gerenciador de Vendas (PGDV). Abaixo, têm-se os dados registrados a cerca dos produtos. Este arquivo registra os artigos comprados por " + objeto_clientesclass.getNome_cliente() + " no dia " + mascara_dia.format(dataatual) + ".", objeto_font_padrao);
+        objeto_paragraph_padrao.setAlignment(Element.ALIGN_JUSTIFIED);
+        objeto_paragraph_padrao.setFirstLineIndent(10);
         try {
             PdfWriter.getInstance(objeto_document, new FileOutputStream(nomeDoArquivo));
             objeto_document.open();
+            // Metadados
             objeto_document.addAuthor("Sistema Gerenciador De Vendas");
             objeto_document.addLanguage("pt-br");
             objeto_document.addTitle("LISTA DE SAÍDA DE PRODUTOS");
             objeto_document.addCreationDate();
             // CONTEÚDO DO ARQUIVO:
-            objeto_document.add(new Paragraph("Este é um teste de parágrafo para avaliar o funcionamento da classe iText que foi baixada na internet"));
+            // Texto:
+            objeto_document.add(objeto_paragraph_cabecalho);
+            objeto_document.add(new Paragraph(" "));
+            objeto_document.add(objeto_paragraph_padrao);
+            objeto_document.add(new Paragraph(" "));
+            // Tabela:
             PdfPTable tabela_objeto = this.criarCabecalhoDaTabelaEmPdf();
             if (objeto_document.isOpen()) {
+                // A cada linha criada na tabela do layout, deve-se adicionar mais três células, com seus respectivos valores
                 PdfPCell celula1 = new PdfPCell(new Phrase("Caneta Preta"));
                 celula1.setHorizontalAlignment(Element.ALIGN_RIGHT);
                 PdfPCell celula2 = new PdfPCell(new Phrase("BIC"));
@@ -237,7 +261,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 tabela_objeto.addCell(celula3);
             }
             objeto_document.add(tabela_objeto);
-            
+
         } catch (FileNotFoundException | DocumentException erro_gerarpdf) {
             System.err.println("Problema ao tentar gerar o arquivo em formato PDF, ERRO: " + erro_gerarpdf);
         } finally {
@@ -285,13 +309,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new TelaPrincipal().setVisible(true);
-                } catch (SQLException ex) {
-                    Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        java.awt.EventQueue.invokeLater(() -> {
+            try {
+                new TelaPrincipal().setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
     }
