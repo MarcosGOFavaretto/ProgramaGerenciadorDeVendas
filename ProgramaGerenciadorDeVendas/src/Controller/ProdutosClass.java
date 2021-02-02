@@ -5,11 +5,13 @@ import java.sql.ResultSet;
 
 public class ProdutosClass {
 
+    // DECLARANDO AS VARIÁVEIS GLOBAIS DA CLASSE:
     private String nomeProduto;
     private String fabricanteProduto;
     private float quantidadeProduto;
     BuscarProduto objeto_buscarproduto = new BuscarProduto();
 
+    // CRIANDO OS MÉTODOS "GETTERS":
     public String getNomeProduto() {
         return nomeProduto;
     }
@@ -22,6 +24,7 @@ public class ProdutosClass {
         return quantidadeProduto;
     }
 
+    // CRIANDO OS MÉTODOS "SETTERS":
     public void setNomeProduto(String nomeProduto) {
         this.nomeProduto = nomeProduto;
     }
@@ -34,10 +37,10 @@ public class ProdutosClass {
         this.quantidadeProduto = quantidadeProduto;
     }
 
+    // CRIANDO MÉTODO QUE IRÁ INICIAR A BUSCA NO BANCO DE DADOS:
     public ResultSet buscarProdutoNoBanco(int codigoProduto) {
-        // Código do método que iniciará a busca no banco de dados.
         ResultSet resultset_buscarproduto = null;
-        resultset_buscarproduto = objeto_buscarproduto.BuscarProduto(codigoProduto);
+        resultset_buscarproduto = objeto_buscarproduto.buscarProduto(codigoProduto);
         return resultset_buscarproduto;
     }
 }

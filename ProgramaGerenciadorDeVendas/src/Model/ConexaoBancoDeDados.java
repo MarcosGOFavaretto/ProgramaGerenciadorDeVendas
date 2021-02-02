@@ -6,12 +6,14 @@ import java.sql.SQLException;
 
 public class ConexaoBancoDeDados {
 
+    // DECLARANDO AS VARIÁVEIS GLOBAIS DA CLASSE:
     public static Connection conexao;
     private final String url = "jdbc:sqlite:/";
     private final String projeto = "D:\\Users\\T-Gamer\\ProgramaGerenciadorDeVendas\\ProgramaGerenciadorDeVendas\\bancodedados";
     private final String arquivoBancoDeDados = "/bancodedados.db";
 
-    public boolean AbrirConexao() {
+    // CRIANDO MÉTODO QUE IRÁ ABRIR A CONEXÃO COM O BANCO DE DADOS:
+    public boolean abrirConexao() {
         try {
             if (conexao == null) {
                 System.out.println("CONEXÃO: Não instanciada!");
@@ -27,7 +29,8 @@ public class ConexaoBancoDeDados {
         }
     }
 
-    public boolean FecharConexao() {
+    // CRIANDO MÉTODO QUE IRÁ FECHAR A CONEXÃO COM O BANCO DE DADOS:
+    public boolean fecharConexao() {
         try {
             if (conexao != null) {
                 this.conexao.close();
@@ -37,8 +40,8 @@ public class ConexaoBancoDeDados {
             } else {
                 return false;
             }
-        } catch (SQLException erro_FecharConexao) {
-            System.err.println("Problema ao tentar fechar a conexão com o banco de dados, ERRO: " + erro_FecharConexao);
+        } catch (SQLException erro_fecharConexao) {
+            System.err.println("Problema ao tentar fechar a conexão com o banco de dados, ERRO: " + erro_fecharConexao);
             return false;
         }
     }
