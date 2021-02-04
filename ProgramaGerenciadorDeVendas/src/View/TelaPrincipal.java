@@ -217,7 +217,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
     private void jBtnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSalvarActionPerformed
         // CÓDIGO DO BOTÃO "SALVAR":
-        System.err.println(nomeDoArquivo);
         objeto_ClientesClass.setNome_cliente(jTxtNomeCliente.getText());
         Document objeto_Document = new Document();
         criarNomeDoArquivo();
@@ -246,17 +245,23 @@ public class TelaPrincipal extends javax.swing.JFrame {
             // Tabela:
             criarCabecalhoDaTabelaEmPdf();
             if (objeto_Document.isOpen()) {
-                // A cada linha criada na tabela do layout, deve-se adicionar mais três células, com seus respectivos valores
-                PdfPCell celula1 = new PdfPCell(new Phrase("Caneta Preta"));
-                celula1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-                PdfPCell celula2 = new PdfPCell(new Phrase("BIC"));
-                celula2.setHorizontalAlignment(Element.ALIGN_RIGHT);
-                PdfPCell celula3 = new PdfPCell(new Phrase("50"));
-                celula3.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                int numeroDeRegistros = 10;
+                int numeroAtualDeLinhas = 1;
+                while (numeroAtualDeLinhas <= numeroDeRegistros) {
+                    // A cada linha criada na tabela do layout, deve-se adicionar mais três células, com seus respectivos valores
+                    PdfPCell celula1 = new PdfPCell(new Phrase("Caneta Preta"));
+                    celula1.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                    PdfPCell celula2 = new PdfPCell(new Phrase("BIC"));
+                    celula2.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                    PdfPCell celula3 = new PdfPCell(new Phrase("50"));
+                    celula3.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                    objeto_PdfPTable.addCell(celula1);
+                    objeto_PdfPTable.addCell(celula2);
+                    objeto_PdfPTable.addCell(celula3);
+                    numeroAtualDeLinhas = numeroAtualDeLinhas + 1;
+                    System.gc();
+                }
 
-                objeto_PdfPTable.addCell(celula1);
-                objeto_PdfPTable.addCell(celula2);
-                objeto_PdfPTable.addCell(celula3);
             }
             objeto_Document.add(objeto_PdfPTable);
 
