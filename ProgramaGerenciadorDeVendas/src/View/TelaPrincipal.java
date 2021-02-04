@@ -164,27 +164,27 @@ public class TelaPrincipal extends javax.swing.JFrame {
         cal.set(Calendar.MINUTE, Integer.parseInt(array_HorarioAtual[1]));
         cal.set(Calendar.SECOND, Integer.parseInt(array_HorarioAtual[2]));
         data_Atual = cal.getTime();
+        abrirPDF();
     }
 
-    private String criarNomeDoArquivo() {
+    private void criarNomeDoArquivo() {
         obterDataHorarioAtual();
         String nomeArquivoPDFSaida = mascara_Dia.format(data_Atual) + " às " + mascara_Horas.format(data_Atual) + " - " + objeto_ClientesClass.getNome_cliente() + ".pdf";
-        return nomeArquivoPDFSaida;
+        nomeDoArquivo = nomeArquivoPDFSaida;
     }
 
     private void abrirPDF() {
         try {
             Desktop.getDesktop().open(new File(this.nomeDoArquivo));
-        } catch (IOException erro_abrirpdf) {
-            System.err.println("Problema ao tentar abrir o arquivo em formato PDF, ERRO: " + erro_abrirpdf);
+        } catch (IOException erro_AbrirPdf) {
+            System.err.println("Problema ao tentar abrir o arquivo em formato PDF, ERRO: " + erro_AbrirPdf);
         }
     }
 
     private void limparInformacoes() {
-        String stringVazia = "";
         DefaultTableModel jTbProdutos_objeto = (DefaultTableModel) this.jTbProdutos.getModel();
         jTbProdutos_objeto.setNumRows(0);
-        jTxtNomeCliente.setText(stringVazia);
+        jTxtNomeCliente.setText("");
     }
 
     private void jBtnInserirManualmenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnInserirManualmenteActionPerformed
@@ -220,7 +220,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         // CÓDIGO DO BOTÃO "SALVAR":
         objeto_ClientesClass.setNome_cliente("Robson Pereira Alameda");
         Document objeto_Document = new Document();
-        nomeDoArquivo = criarNomeDoArquivo();
+        criarNomeDoArquivo();
         // Criando as fontes:
         Font objeto_Font_Cabecalho = new Font(Font.FontFamily.TIMES_ROMAN, 20, Font.BOLD);
         Font objeto_Font_Padrao = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL);
@@ -260,12 +260,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
             objeto_Document.add(objeto_PdfPTable);
 
-        } catch (FileNotFoundException | DocumentException erro_gerarpdf) {
-            System.err.println("Problema ao tentar gerar o arquivo em formato PDF, ERRO: " + erro_gerarpdf);
+        } catch (FileNotFoundException | DocumentException erro_GerarPdf) {
+            System.err.println("Problema ao tentar gerar o arquivo em formato PDF, ERRO: " + erro_GerarPdf);
         } finally {
             objeto_Document.close();
         }
-
         if (JOptionPane.showConfirmDialog(this, "Deseja imprimir a lista de produtos?", "IMPRIMIR?!", JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION) {
             JOptionPane.showMessageDialog(this, "Arquivo enviado para a impressora!", "OPERAÇÃO CONCLUÍDA!", JOptionPane.INFORMATION_MESSAGE);
         } else {
