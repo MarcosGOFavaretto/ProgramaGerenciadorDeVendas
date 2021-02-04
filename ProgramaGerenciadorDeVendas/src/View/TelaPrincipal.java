@@ -29,7 +29,7 @@ import javax.swing.table.DefaultTableModel;
 public class TelaPrincipal extends javax.swing.JFrame {
 
     // VARIÁVEIS GLOBAIS DA CLASSE:
-    private String nomeDoArquivo = "";
+    String nomeDoArquivo = "";
     private ProdutosClass objeto_ProdutosClass = new ProdutosClass();
     ClientesClass objeto_ClientesClass = new ClientesClass();
     private ResultSet resultset_ProdutoParaInserir = null;
@@ -164,7 +164,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
         cal.set(Calendar.MINUTE, Integer.parseInt(array_HorarioAtual[1]));
         cal.set(Calendar.SECOND, Integer.parseInt(array_HorarioAtual[2]));
         data_Atual = cal.getTime();
-        abrirPDF();
     }
 
     private void criarNomeDoArquivo() {
@@ -218,7 +217,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
     private void jBtnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSalvarActionPerformed
         // CÓDIGO DO BOTÃO "SALVAR":
-        objeto_ClientesClass.setNome_cliente("Robson Pereira Alameda");
+        System.err.println(nomeDoArquivo);
+        objeto_ClientesClass.setNome_cliente(jTxtNomeCliente.getText());
         Document objeto_Document = new Document();
         criarNomeDoArquivo();
         // Criando as fontes:
