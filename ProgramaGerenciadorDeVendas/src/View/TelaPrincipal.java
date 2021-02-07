@@ -40,7 +40,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
     Date data_Atual = null;
 
     PdfPTable objeto_PdfPTable = null;
+    PdfPTable objeto_PdfPTable_rodape = null;
     PdfPCell objeto_PdfPCell = null;
+    Document objeto_Document = null;
 
     public TelaPrincipal() throws SQLException {
         initComponents();
@@ -51,7 +53,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         objeto_Tabela.setNumRows(0);
         while (resultset_ProdutoParaInserir.next()) {
             objeto_Tabela.addRow(new Object[]{
-                resultset_ProdutoParaInserir.getInt("nome_produto"),
+                resultset_ProdutoParaInserir.getString("nome_produto"),
                 resultset_ProdutoParaInserir.getString("fabricante_produto"),
                 String.valueOf(objeto_ProdutosClass.getQuantidadeProduto())
             }
@@ -218,7 +220,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void jBtnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSalvarActionPerformed
         // CÓDIGO DO BOTÃO "SALVAR":
         objeto_ClientesClass.setNome_cliente(jTxtNomeCliente.getText());
-        Document objeto_Document = new Document();
+        objeto_Document = new Document();
         criarNomeDoArquivo();
         // Criando as fontes:
         Font objeto_Font_Cabecalho = new Font(Font.FontFamily.TIMES_ROMAN, 20, Font.BOLD);
@@ -261,10 +263,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
                     numeroAtualDeLinhas = numeroAtualDeLinhas + 1;
                     System.gc();
                 }
-
             }
             objeto_Document.add(objeto_PdfPTable);
-
         } catch (FileNotFoundException | DocumentException erro_GerarPdf) {
             System.err.println("Problema ao tentar gerar o arquivo em formato PDF, ERRO: " + erro_GerarPdf);
         } finally {
