@@ -44,6 +44,7 @@ public class TelaInsercaoManual extends javax.swing.JFrame {
         jTxtVoltar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("INSERÇÃO MANUAL");
         setMaximumSize(new java.awt.Dimension(600, 400));
         setMinimumSize(new java.awt.Dimension(600, 400));
         setName("TelaInsercaoManual"); // NOI18N
@@ -96,8 +97,7 @@ public class TelaInsercaoManual extends javax.swing.JFrame {
     private void jTxtVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtVoltarActionPerformed
         // CÓDIGO DO BOTÃO "VOLTAR":
         try {
-            TelaPrincipal telaPrincipal_objeto;
-            telaPrincipal_objeto = new TelaPrincipal();
+            TelaPrincipal telaPrincipal_objeto = new TelaPrincipal();
             telaPrincipal_objeto.setVisible(true);
         this.setVisible(false);
         } catch (SQLException ex) {
