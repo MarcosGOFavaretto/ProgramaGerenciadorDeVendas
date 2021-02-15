@@ -30,7 +30,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     // VARIÁVEIS GLOBAIS DA CLASSE:
     String nomeDoArquivo = "";
-    private ProdutosClass objeto_ProdutosClass = new ProdutosClass();
+    ProdutosClass objeto_ProdutosClass = new ProdutosClass();
     ClientesClass objeto_ClientesClass = new ClientesClass();
     private ResultSet resultset_ProdutoParaInserir = null;
     String[] array_DataAtual = null;
@@ -43,21 +43,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
     PdfPTable objeto_PdfPTable_rodape = null;
     PdfPCell objeto_PdfPCell = null;
     Document objeto_Document = null;
+    DefaultTableModel objeto_Tabela;
 
     public TelaPrincipal() throws SQLException {
         initComponents();
         limparInformacoes();
-        DefaultTableModel objeto_Tabela = (DefaultTableModel) jTbProdutos.getModel();
+        objeto_Tabela = (DefaultTableModel) jTbProdutos.getModel();
         objeto_Tabela.setNumRows(0);
-        int leituraAtual = 1; // Variável que simula o código lido pelo leitor de código de barras.
-        resultset_ProdutoParaInserir = objeto_ProdutosClass.buscarProdutoNoBanco(leituraAtual);
-        objeto_Tabela.addRow(new Object[]{
-            resultset_ProdutoParaInserir.getString("nome_produto"),
-            resultset_ProdutoParaInserir.getString("fabricante_produto"),
-            String.valueOf(objeto_ProdutosClass.getQuantidadeProduto())
-        }
-        );
-        resultset_ProdutoParaInserir = null;
+
     }
 
     /**
@@ -78,6 +71,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jBtnInserirManualmente = new javax.swing.JButton();
         jBtnCancelar = new javax.swing.JButton();
         jBtnSalvar = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jTxtCodigoProduto = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PROGRAMA GERENCIADOR DE VENDAS");
@@ -144,9 +139,32 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         getContentPane().add(jBtnSalvar, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 560, 150, -1));
 
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel3.setText("CÓDIGO DO PRODUTO");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 650, -1, -1));
+
+        jTxtCodigoProduto.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jTxtCodigoProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTxtCodigoProdutoActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jTxtCodigoProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 680, 716, -1));
+
         setSize(new java.awt.Dimension(1096, 759));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void adicionarLinhaTabela() throws SQLException {
+        resultset_ProdutoParaInserir = objeto_ProdutosClass.buscarProdutoNoBanco();
+        objeto_Tabela.addRow(new Object[]{
+            resultset_ProdutoParaInserir.getString("nome_produto"),
+            resultset_ProdutoParaInserir.getString("fabricante_produto"),
+            String.valueOf(objeto_ProdutosClass.getQuantidadeProduto())
+        }
+        );
+        resultset_ProdutoParaInserir = null;
+    }
 
     private void obterDataHorarioAtual() {
         data_Atual = new Date();
@@ -285,6 +303,22 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jBtnSalvarActionPerformed
 
+    private void jTxtCodigoProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtCodigoProdutoActionPerformed
+        // CÓDIGO DO CAMPO DE TEXTO "CÓDIGO DO PRODUTO":
+        if (jTxtCodigoProduto.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Lamento, o códgio do produto não foi informado!");
+        } else {
+            objeto_ProdutosClass.setCodigoProduto(jTxtCodigoProduto.getText());
+            try {
+                adicionarLinhaTabela();
+            } catch (SQLException ex) {
+                Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            jTxtCodigoProduto.setText("");
+            jTxtCodigoProduto.requestFocus();
+        }
+    }//GEN-LAST:event_jTxtCodigoProdutoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -327,9 +361,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton jBtnSalvar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTbProdutos;
+    private javax.swing.JTextField jTxtCodigoProduto;
     private javax.swing.JTextField jTxtNomeCliente;
     // End of variables declaration//GEN-END:variables
 }

@@ -13,12 +13,12 @@ public class BuscarProduto {
     private PreparedStatement statement_buscarproduto = null;
 
     // CRIANDO MÉTODO QUE IRÁ REALIZAR A BUSCA NO BANCO DE DADOS:
-    public ResultSet buscarProduto(int codigoProduto) {
+    public ResultSet buscarProduto(String codigoProduto) {
         try {
             sql_buscarproduto = "SELECT * FROM produtos WHERE cod_produto=?";
             objeto_conexaobancodedados.abrirConexao();
             statement_buscarproduto = objeto_conexaobancodedados.conexao.prepareStatement(sql_buscarproduto);
-            statement_buscarproduto.setInt(1, codigoProduto);
+            statement_buscarproduto.setString(1, codigoProduto);
             resultset_buscarproduto = statement_buscarproduto.executeQuery();
         } catch (SQLException erro_buscarproduto) {
             System.err.println("Problema ao tentar buscar o produto no banco de dados, ERRO: " + erro_buscarproduto);
