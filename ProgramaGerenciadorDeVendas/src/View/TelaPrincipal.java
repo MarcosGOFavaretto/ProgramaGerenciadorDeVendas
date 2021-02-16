@@ -182,7 +182,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
         if (cal == null) {
             cal = Calendar.getInstance();
         }
-
         cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(array_DataAtual[0]) - 1);
         cal.set(Calendar.MONTH, Integer.parseInt(array_DataAtual[1]) - 1);
         cal.set(Calendar.YEAR, Integer.parseInt(array_DataAtual[2]));
