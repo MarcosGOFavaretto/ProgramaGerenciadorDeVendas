@@ -200,13 +200,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void criarCabecalhoDaTabelaEmPdf() {
         objeto_PdfPTable = new PdfPTable(new float[]{10f, 5f, 3f});
-        objeto_PdfPCell = new PdfPCell(new Phrase("Nome do produto"));
+        objeto_PdfPCell = new PdfPCell(new Phrase("NOME DO PRODUTO"));
         objeto_PdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
         objeto_PdfPTable.addCell(objeto_PdfPCell);
-        objeto_PdfPCell = new PdfPCell(new Phrase("Fabricante"));
+        objeto_PdfPCell = new PdfPCell(new Phrase("FABRICANTE"));
         objeto_PdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
         objeto_PdfPTable.addCell(objeto_PdfPCell);
-        objeto_PdfPCell = new PdfPCell(new Phrase("Quantidade"));
+        objeto_PdfPCell = new PdfPCell(new Phrase("QUANTIDADE"));
         objeto_PdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
         objeto_PdfPTable.addCell(objeto_PdfPCell);
     }
@@ -304,6 +304,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(this, "Arquivo PDF gerado!", "OPERAÇÃO CONCLUÍDA!", JOptionPane.INFORMATION_MESSAGE);
                 abrirPDF();
+                limparInformacoes();
             }
         }
     }//GEN-LAST:event_jBtnSalvarActionPerformed
