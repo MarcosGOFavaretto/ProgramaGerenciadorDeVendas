@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.BuscarProduto;
+import Model.SalvarProdutoNaLista;
 import java.sql.ResultSet;
 
 public class ProdutosClass {
@@ -11,6 +12,7 @@ public class ProdutosClass {
     private String fabricanteProduto;
     private float quantidadeProduto;
     BuscarProduto objeto_buscarproduto = new BuscarProduto();
+    SalvarProdutoNaLista objeto_SalvarProdutoNaLista = new SalvarProdutoNaLista();
     private ResultSet resultset_buscarproduto;
 
     // CRIANDO OS MÉTODOS "GETTERS":
@@ -52,5 +54,10 @@ public class ProdutosClass {
         resultset_buscarproduto = null;
         resultset_buscarproduto = objeto_buscarproduto.buscarProduto(getCodigoProduto());
         return resultset_buscarproduto;
+    }
+
+    // CRIANDO MÉTODO QUE IRÁ SALVAR A LISTA DE COMPRAS NO BANCO DE DADOS:
+    public void salvarProdutoNaLista() {
+        
     }
 }

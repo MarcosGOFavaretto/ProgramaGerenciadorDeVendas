@@ -44,13 +44,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
     PdfPCell objeto_PdfPCell = null;
     Document objeto_Document = null;
     DefaultTableModel objeto_Tabela;
+    Calendar cal = null;
 
     public TelaPrincipal() throws SQLException {
         initComponents();
         limparInformacoes();
         objeto_Tabela = (DefaultTableModel) jTbProdutos.getModel();
         objeto_Tabela.setNumRows(0);
-
     }
 
     /**
@@ -155,6 +155,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void limparInformacoes() {
+        DefaultTableModel jTbProdutos_objeto = (DefaultTableModel) this.jTbProdutos.getModel();
+        jTbProdutos_objeto.setNumRows(0);
+        jTxtNomeCliente.setText("");
+        jTxtCodigoProduto.requestFocus();
+    }
+
     private void adicionarLinhaTabela() throws SQLException {
         resultset_ProdutoParaInserir = objeto_ProdutosClass.buscarProdutoNoBanco();
         objeto_Tabela.addRow(new Object[]{
@@ -172,8 +179,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
         mascara_Horas = new SimpleDateFormat("HH-mm-ss");
         array_DataAtual = mascara_Dia.format(data_Atual).split("-");
         array_HorarioAtual = mascara_Horas.format(data_Atual).split("-");
-
-        Calendar cal = Calendar.getInstance();
+        if (cal == null) {
+            cal = Calendar.getInstance();
+        }
 
         cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(array_DataAtual[0]) - 1);
         cal.set(Calendar.MONTH, Integer.parseInt(array_DataAtual[1]) - 1);
@@ -190,18 +198,25 @@ public class TelaPrincipal extends javax.swing.JFrame {
         nomeDoArquivo = nomeArquivoPDFSaida;
     }
 
+    private void criarCabecalhoDaTabelaEmPdf() {
+        objeto_PdfPTable = new PdfPTable(new float[]{10f, 5f, 3f});
+        objeto_PdfPCell = new PdfPCell(new Phrase("Nome do produto"));
+        objeto_PdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        objeto_PdfPTable.addCell(objeto_PdfPCell);
+        objeto_PdfPCell = new PdfPCell(new Phrase("Fabricante"));
+        objeto_PdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        objeto_PdfPTable.addCell(objeto_PdfPCell);
+        objeto_PdfPCell = new PdfPCell(new Phrase("Quantidade"));
+        objeto_PdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        objeto_PdfPTable.addCell(objeto_PdfPCell);
+    }
+
     private void abrirPDF() {
         try {
             Desktop.getDesktop().open(new File(this.nomeDoArquivo));
         } catch (IOException erro_AbrirPdf) {
             System.err.println("Problema ao tentar abrir o arquivo em formato PDF, ERRO: " + erro_AbrirPdf);
         }
-    }
-
-    private void limparInformacoes() {
-        DefaultTableModel jTbProdutos_objeto = (DefaultTableModel) this.jTbProdutos.getModel();
-        jTbProdutos_objeto.setNumRows(0);
-        jTxtNomeCliente.setText("");
     }
 
     private void jBtnInserirManualmenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnInserirManualmenteActionPerformed
@@ -221,18 +236,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jBtnCancelarActionPerformed
 
-    private void criarCabecalhoDaTabelaEmPdf() {
-        objeto_PdfPTable = new PdfPTable(new float[]{10f, 5f, 3f});
-        objeto_PdfPCell = new PdfPCell(new Phrase("Nome do produto"));
-        objeto_PdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        objeto_PdfPTable.addCell(objeto_PdfPCell);
-        objeto_PdfPCell = new PdfPCell(new Phrase("Fabricante"));
-        objeto_PdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        objeto_PdfPTable.addCell(objeto_PdfPCell);
-        objeto_PdfPCell = new PdfPCell(new Phrase("Quantidade"));
-        objeto_PdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        objeto_PdfPTable.addCell(objeto_PdfPCell);
-    }
     private void jBtnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSalvarActionPerformed
         // CÓDIGO DO BOTÃO "SALVAR":
         if (jTxtNomeCliente.getText().equals("")) {
@@ -300,7 +303,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 abrirPDF();
             }
         }
-
     }//GEN-LAST:event_jBtnSalvarActionPerformed
 
     private void jTxtCodigoProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtCodigoProdutoActionPerformed
