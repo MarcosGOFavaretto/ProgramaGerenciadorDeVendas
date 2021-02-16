@@ -242,6 +242,18 @@ public class TelaPrincipal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Lamento, o nome do usuário não foi informado!");
         } else {
             objeto_ClientesClass.setNome_cliente(jTxtNomeCliente.getText());
+            int quantidadeDeLinhasTabela = jTbProdutos.getRowCount();
+            objeto_ProdutosClass.criarArrays(quantidadeDeLinhasTabela);
+            for (int i = 0; i < quantidadeDeLinhasTabela; i++) {
+                objeto_ProdutosClass.listaDeCompraNome[i] = jTbProdutos.getValueAt(i, 0);
+                objeto_ProdutosClass.listaDeCompraFornecedor[i] = jTbProdutos.getValueAt(i, 1);
+                objeto_ProdutosClass.listaDeCompraQuantidade[i] = jTbProdutos.getValueAt(i, 2);
+            }
+            try {
+                objeto_ProdutosClass.salvarProdutoNaLista(quantidadeDeLinhasTabela);
+            } catch (SQLException ex) {
+                Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
             objeto_Document = new Document();
             criarNomeDoArquivo();
             // Criando as fontes:

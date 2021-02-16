@@ -9,14 +9,14 @@ public class SalvarProdutoNaLista {
     private ConexaoBancoDeDados objeto_ConexaoBancoDeDados = new ConexaoBancoDeDados();
     private PreparedStatement statment_SalvarProdutoNaLista;
 
-    public boolean salvarProdutoNaLista(String nomeProdutoCompra, String fabricanteProdutoCompra, String quantidade) throws SQLException {
+    public boolean salvarProdutoNaLista(String nomeProdutoVenda, String fabricanteProdutoVenda, String quantidadeProdutoVenda) throws SQLException {
         try {
-            sql_SalvarProdutoNaLista = "INSERT INTO compra(nome_produto_compra, fabricante_produto_compra, quantidade) VALUES (?,?,?);";
+            sql_SalvarProdutoNaLista = "INSERT INTO vendas(nome_produto_venda, fabricante_produto_venda, quantidade) VALUES (?,?,?);";
             objeto_ConexaoBancoDeDados.abrirConexao();
             statment_SalvarProdutoNaLista = objeto_ConexaoBancoDeDados.conexao.prepareStatement(sql_SalvarProdutoNaLista);
-            statment_SalvarProdutoNaLista.setString(1, nomeProdutoCompra);
-            statment_SalvarProdutoNaLista.setString(2, fabricanteProdutoCompra);
-            statment_SalvarProdutoNaLista.setString(3, quantidade);
+            statment_SalvarProdutoNaLista.setString(1, nomeProdutoVenda);
+            statment_SalvarProdutoNaLista.setString(2, fabricanteProdutoVenda);
+            statment_SalvarProdutoNaLista.setString(3, quantidadeProdutoVenda);
             if (!statment_SalvarProdutoNaLista.execute()) {
                 System.out.println("Arquivo adicionado na lista de compra!");
                 return true;
