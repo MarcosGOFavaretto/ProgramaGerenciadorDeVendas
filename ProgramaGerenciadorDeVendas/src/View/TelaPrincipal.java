@@ -249,11 +249,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 objeto_ProdutosClass.listaDeCompraFornecedor[i] = jTbProdutos.getValueAt(i, 1);
                 objeto_ProdutosClass.listaDeCompraQuantidade[i] = jTbProdutos.getValueAt(i, 2);
             }
-            try {
-                objeto_ProdutosClass.salvarProdutoNaLista(quantidadeDeLinhasTabela);
-            } catch (SQLException ex) {
-                Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-            }
             objeto_Document = new Document();
             criarNomeDoArquivo();
             // Criando as fontes:
@@ -281,22 +276,18 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 // Tabela:
                 criarCabecalhoDaTabelaEmPdf();
                 if (objeto_Document.isOpen()) {
-                    int numeroDeRegistros = 10;
-                    int numeroAtualDeLinhas = 1;
-                    while (numeroAtualDeLinhas <= numeroDeRegistros) {
-                        // A cada linha criada na tabela do layout, deve-se adicionar mais três células, com seus respectivos valores
-                        PdfPCell celula1 = new PdfPCell(new Phrase("Caneta Preta"));
+                    for (int i = 0; i < quantidadeDeLinhasTabela; i++) {
+                        PdfPCell celula1 = new PdfPCell(new Phrase(objeto_ProdutosClass.listaDeCompraNome[i].toString()));
                         celula1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-                        PdfPCell celula2 = new PdfPCell(new Phrase("BIC"));
+                        PdfPCell celula2 = new PdfPCell(new Phrase(objeto_ProdutosClass.listaDeCompraFornecedor[i].toString()));
                         celula2.setHorizontalAlignment(Element.ALIGN_RIGHT);
-                        PdfPCell celula3 = new PdfPCell(new Phrase("50"));
+                        PdfPCell celula3 = new PdfPCell(new Phrase(objeto_ProdutosClass.listaDeCompraQuantidade[i].toString()));
                         celula3.setHorizontalAlignment(Element.ALIGN_RIGHT);
                         objeto_PdfPTable.addCell(celula1);
                         objeto_PdfPTable.addCell(celula2);
                         objeto_PdfPTable.addCell(celula3);
-                        numeroAtualDeLinhas = numeroAtualDeLinhas + 1;
-                        System.gc();
                     }
+                    System.gc();
                 }
                 objeto_Document.add(objeto_PdfPTable);
                 objeto_Paragraph_Padrao = null;
@@ -320,7 +311,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void jTxtCodigoProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtCodigoProdutoActionPerformed
         // CÓDIGO DO CAMPO DE TEXTO "CÓDIGO DO PRODUTO":
         if (jTxtCodigoProduto.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Lamento, o códgio do produto não foi informado!");
+            JOptionPane.showMessageDialog(this, "Lamento, o código do produto não foi informado!");
         } else {
             objeto_ProdutosClass.setCodigoProduto(jTxtCodigoProduto.getText());
             try {

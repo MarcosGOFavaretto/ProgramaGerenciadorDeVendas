@@ -1,7 +1,6 @@
 package Controller;
 
 import Model.BuscarProduto;
-import Model.SalvarProdutoNaLista;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -13,8 +12,8 @@ public class ProdutosClass {
     private String fabricanteProduto;
     private float quantidadeProduto;
     BuscarProduto objeto_buscarproduto = new BuscarProduto();
-    SalvarProdutoNaLista objeto_SalvarProdutoNaLista = new SalvarProdutoNaLista();
     private ResultSet resultset_buscarproduto;
+    private ResultSet resultset_BuscarLista;
     public Object[] listaDeCompraNome = null;
     public Object[] listaDeCompraFornecedor = null;
     public Object[] listaDeCompraQuantidade = null;
@@ -60,22 +59,10 @@ public class ProdutosClass {
         return resultset_buscarproduto;
     }
 
-    // CRIANDO MÉTODO QUE IRÁ SALVAR A LISTA DE COMPRAS NO BANCO DE DADOS:
-    public void salvarProdutoNaLista(int quantidadeDeLinhasTabela) throws SQLException {
-        for (int i = 0; i < quantidadeDeLinhasTabela; i++) {
-            String nomeProdutoVenda = this.listaDeCompraNome[i].toString();
-            String fornecedorProdutoVenda = this.listaDeCompraFornecedor[i].toString();
-            String quantidadeProdutoVenda = this.listaDeCompraQuantidade[i].toString();
-            objeto_SalvarProdutoNaLista.salvarProdutoNaLista(nomeProdutoVenda, fornecedorProdutoVenda, quantidadeProdutoVenda);
-            nomeProdutoVenda = "";
-            fornecedorProdutoVenda = "";
-            quantidadeProdutoVenda = "";
-        }
-    }
-
     public void criarArrays(int quantidadeDeLinhasTabela) {
         listaDeCompraNome = new Object[quantidadeDeLinhasTabela];
         listaDeCompraFornecedor = new Object[quantidadeDeLinhasTabela];
         listaDeCompraQuantidade = new Object[quantidadeDeLinhasTabela];
     }
+
 }
