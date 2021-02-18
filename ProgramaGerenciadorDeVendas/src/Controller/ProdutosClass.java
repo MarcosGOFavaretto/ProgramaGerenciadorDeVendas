@@ -17,6 +17,9 @@ public class ProdutosClass {
     public Object[] listaDeCompraNome = null;
     public Object[] listaDeCompraFornecedor = null;
     public Object[] listaDeCompraQuantidade = null;
+    public Object[] produtosAtuaisNome = null;
+    public Object[] produtosAtuaisFornecedor = null;
+    public Object[] produtosAtuaisQuantidade = null;
 
     // CRIANDO OS MÉTODOS "GETTERS":
     public String getCodigoProduto() {
@@ -59,10 +62,15 @@ public class ProdutosClass {
         return resultset_buscarproduto;
     }
 
-    public void criarArrays(int quantidadeDeLinhasTabela) {
+    public void criarArraysDaLista(int quantidadeDeLinhasTabela) {
         listaDeCompraNome = new Object[quantidadeDeLinhasTabela];
         listaDeCompraFornecedor = new Object[quantidadeDeLinhasTabela];
         listaDeCompraQuantidade = new Object[quantidadeDeLinhasTabela];
+    }
+    public void criarArraysDosProdutosAtuais(int quantidadeDeLinhasTabela) {
+        produtosAtuaisNome = new Object[quantidadeDeLinhasTabela];
+        produtosAtuaisFornecedor = new Object[quantidadeDeLinhasTabela];
+        produtosAtuaisQuantidade = new Object[quantidadeDeLinhasTabela];
     }
 
 }

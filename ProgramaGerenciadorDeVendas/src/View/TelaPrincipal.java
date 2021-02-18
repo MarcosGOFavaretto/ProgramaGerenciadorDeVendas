@@ -45,6 +45,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     Document objeto_Document = null;
     DefaultTableModel objeto_Tabela;
     Calendar cal = null;
+    int quantidadeDeLinhasTabela = 0;
 
     public TelaPrincipal() throws SQLException {
         initComponents();
@@ -164,6 +165,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void adicionarLinhaTabela() throws SQLException {
         resultset_ProdutoParaInserir = objeto_ProdutosClass.buscarProdutoNoBanco();
+        quantidadeDeLinhasTabela = jTbProdutos.getRowCount();
+        for (int i = 0; i <= quantidadeDeLinhasTabela; i++) {
+            objeto_ProdutosClass.produtosAtuaisNome[i] = jTbProdutos.getValueAt(i, 0);
+            objeto_ProdutosClass.produtosAtuaisFornecedor[i] = jTbProdutos.getValueAt(i, 0);
+            objeto_ProdutosClass.produtosAtuaisQuantidade[i] = jTbProdutos.getValueAt(i, 0);
+        }
         objeto_Tabela.addRow(new Object[]{
             resultset_ProdutoParaInserir.getString("nome_produto"),
             resultset_ProdutoParaInserir.getString("fabricante_produto"),
@@ -241,8 +248,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Lamento, o nome do usuário não foi informado!");
         } else {
             objeto_ClientesClass.setNome_cliente(jTxtNomeCliente.getText());
-            int quantidadeDeLinhasTabela = jTbProdutos.getRowCount();
-            objeto_ProdutosClass.criarArrays(quantidadeDeLinhasTabela);
+            quantidadeDeLinhasTabela = jTbProdutos.getRowCount();
+            objeto_ProdutosClass.criarArraysDaLista(quantidadeDeLinhasTabela);
             for (int i = 0; i < quantidadeDeLinhasTabela; i++) {
                 objeto_ProdutosClass.listaDeCompraNome[i] = jTbProdutos.getValueAt(i, 0);
                 objeto_ProdutosClass.listaDeCompraFornecedor[i] = jTbProdutos.getValueAt(i, 1);
