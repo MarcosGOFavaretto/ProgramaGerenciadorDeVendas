@@ -166,11 +166,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void adicionarLinhaTabela() throws SQLException {
         resultset_ProdutoParaInserir = objeto_ProdutosClass.buscarProdutoNoBanco();
         quantidadeDeLinhasTabela = jTbProdutos.getRowCount();
-        for (int i = 0; i <= quantidadeDeLinhasTabela; i++) {
-            objeto_ProdutosClass.produtosAtuaisNome[i] = jTbProdutos.getValueAt(i, 0);
-            objeto_ProdutosClass.produtosAtuaisFornecedor[i] = jTbProdutos.getValueAt(i, 0);
-            objeto_ProdutosClass.produtosAtuaisQuantidade[i] = jTbProdutos.getValueAt(i, 0);
-        }
+//        objeto_ProdutosClass.criarArraysDosProdutosAtuais(quantidadeDeLinhasTabela);
+//        if (quantidadeDeLinhasTabela != 0) {
+//            for (int i = 0; i <= quantidadeDeLinhasTabela; i++) {
+//                objeto_ProdutosClass.produtosAtuaisNome[i] = jTbProdutos.getValueAt(i, 0);
+//                objeto_ProdutosClass.produtosAtuaisFornecedor[i] = jTbProdutos.getValueAt(i, 1);
+//                objeto_ProdutosClass.produtosAtuaisQuantidade[i] = jTbProdutos.getValueAt(i, 2);
+//            }
+//        }
         objeto_Tabela.addRow(new Object[]{
             resultset_ProdutoParaInserir.getString("nome_produto"),
             resultset_ProdutoParaInserir.getString("fabricante_produto"),

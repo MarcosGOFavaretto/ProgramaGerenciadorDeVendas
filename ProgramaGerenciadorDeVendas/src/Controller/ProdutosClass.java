@@ -2,7 +2,6 @@ package Controller;
 
 import Model.BuscarProduto;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class ProdutosClass {
 
