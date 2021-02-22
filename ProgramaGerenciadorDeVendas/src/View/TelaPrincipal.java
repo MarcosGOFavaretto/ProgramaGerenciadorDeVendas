@@ -166,11 +166,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void adicionarLinhaTabela() throws SQLException {
         resultset_ProdutoParaInserir = objeto_ProdutosClass.buscarProdutoNoBanco();
         quantidadeDeLinhasTabela = jTbProdutos.getRowCount();
-        for (int i = 0; i <= quantidadeDeLinhasTabela; i++) {
-            objeto_ProdutosClass.produtosAtuaisNome[i] = jTbProdutos.getValueAt(i, 0);
-            objeto_ProdutosClass.produtosAtuaisFornecedor[i] = jTbProdutos.getValueAt(i, 0);
-            objeto_ProdutosClass.produtosAtuaisQuantidade[i] = jTbProdutos.getValueAt(i, 0);
-        }
+//        objeto_ProdutosClass.criarArraysDosProdutosAtuais(quantidadeDeLinhasTabela);
+//        if (quantidadeDeLinhasTabela != 0) {
+//            for (int i = 0; i <= quantidadeDeLinhasTabela; i++) {
+//                objeto_ProdutosClass.produtosAtuaisNome[i] = jTbProdutos.getValueAt(i, 0);
+//                objeto_ProdutosClass.produtosAtuaisFornecedor[i] = jTbProdutos.getValueAt(i, 1);
+//                objeto_ProdutosClass.produtosAtuaisQuantidade[i] = jTbProdutos.getValueAt(i, 2);
+//            }
+//        }
         objeto_Tabela.addRow(new Object[]{
             resultset_ProdutoParaInserir.getString("nome_produto"),
             resultset_ProdutoParaInserir.getString("fabricante_produto"),
@@ -180,27 +183,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
         resultset_ProdutoParaInserir = null;
     }
 
-    private void obterDataHorarioAtual() {
+    private void obterDataAtual() {
         data_Atual = new Date();
-        mascara_Dia = new SimpleDateFormat("dd-MM-yyyy");
-        mascara_Horas = new SimpleDateFormat("HH-mm-ss");
-        array_DataAtual = mascara_Dia.format(data_Atual).split("-");
-        array_HorarioAtual = mascara_Horas.format(data_Atual).split("-");
-        if (cal == null) {
-            cal = Calendar.getInstance();
-        }
-        cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(array_DataAtual[0]) - 1);
-        cal.set(Calendar.MONTH, Integer.parseInt(array_DataAtual[1]) - 1);
-        cal.set(Calendar.YEAR, Integer.parseInt(array_DataAtual[2]));
-        cal.set(Calendar.HOUR, Integer.parseInt(array_HorarioAtual[0]) + 12);
-        cal.set(Calendar.MINUTE, Integer.parseInt(array_HorarioAtual[1]));
-        cal.set(Calendar.SECOND, Integer.parseInt(array_HorarioAtual[2]));
-        data_Atual = cal.getTime();
+        mascara_Dia = new SimpleDateFormat("dd.MM.yyyy");
     }
 
     private void criarNomeDoArquivo() {
-        obterDataHorarioAtual();
-        String nomeArquivoPDFSaida = mascara_Dia.format(data_Atual) + " às " + mascara_Horas.format(data_Atual) + " - " + objeto_ClientesClass.getNome_cliente() + ".pdf";
+        obterDataAtual();
+        String nomeArquivoPDFSaida = mascara_Dia.format(data_Atual) + " - " + objeto_ClientesClass.getNome_cliente() + ".pdf";
         nomeDoArquivo = nomeArquivoPDFSaida;
     }
 
