@@ -43,12 +43,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
     Document objeto_Document = null;
     DefaultTableModel objeto_Tabela;
     Calendar cal = null;
+    int linhasDeProdutosNaLista = 0;
 
     public TelaPrincipal() throws SQLException {
         initComponents();
-        limparInformacoes();
         objeto_Tabela = (DefaultTableModel) jTbProdutos.getModel();
-        objeto_Tabela.setNumRows(0);
+        limparInformacoes();
     }
 
     /**
@@ -101,10 +101,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jTbProdutos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "Nome do produto", "Fabricante", "Quantidade"
@@ -162,8 +159,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void limparInformacoes() {
-        DefaultTableModel jTbProdutos_objeto = (DefaultTableModel) this.jTbProdutos.getModel();
-        jTbProdutos_objeto.setNumRows(0);
+        objeto_Tabela.setNumRows(0);
         jTxtNomeCliente.setText("");
         jTxtCodigoProduto.requestFocus();
     }
@@ -173,7 +169,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         try {
             objeto_ProdutosClass.buscarProdutoNoBanco();
             objeto_Tabela.setNumRows(0);
-            int linhasDeProdutosNaLista = objeto_ProdutosClass.listaDeProdutos.size() / 3;
+            linhasDeProdutosNaLista = objeto_ProdutosClass.listaDeProdutos.size() / 3;
             for (int i = 0; i < linhasDeProdutosNaLista; ++i) {
                 objeto_Tabela.addRow(new Object[]{
                     objeto_ProdutosClass.listaDeProdutos.get(i * 3),
@@ -268,7 +264,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 objeto_Document.add(new Paragraph(" "));
                 // Tabela:
                 criarCabecalhoDaTabelaEmPdf();
-                int linhasDeProdutosNaLista = objeto_ProdutosClass.listaDeProdutos.size() / 3;                    
+                linhasDeProdutosNaLista = objeto_ProdutosClass.listaDeProdutos.size() / 3;
                 if (objeto_Document.isOpen()) {
                     for (int i = 0; i < linhasDeProdutosNaLista; ++i) {
                         PdfPCell celula1 = new PdfPCell(new Phrase(objeto_ProdutosClass.listaDeProdutos.get(i * 3)));
