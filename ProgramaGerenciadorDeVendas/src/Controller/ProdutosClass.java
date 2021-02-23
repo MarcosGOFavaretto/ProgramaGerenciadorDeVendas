@@ -2,6 +2,8 @@ package Controller;
 
 import Model.BuscarProduto;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class ProdutosClass {
 
@@ -12,13 +14,7 @@ public class ProdutosClass {
     private float quantidadeProduto;
     BuscarProduto objeto_buscarproduto = new BuscarProduto();
     private ResultSet resultset_buscarproduto;
-    private ResultSet resultset_BuscarLista;
-    public Object[] listaDeCompraNome = null;
-    public Object[] listaDeCompraFornecedor = null;
-    public Object[] listaDeCompraQuantidade = null;
-    public Object[] produtosAtuaisNome = null;
-    public Object[] produtosAtuaisFornecedor = null;
-    public Object[] produtosAtuaisQuantidade = null;
+    public ArrayList<String> listaDeProdutos = new ArrayList();
 
     // CRIANDO OS MÉTODOS "GETTERS":
     public String getCodigoProduto() {
@@ -55,21 +51,21 @@ public class ProdutosClass {
     }
 
     // CRIANDO MÉTODO QUE IRÁ INICIAR A BUSCA NO BANCO DE DADOS:
-    public ResultSet buscarProdutoNoBanco() {
+    public void buscarProdutoNoBanco() throws SQLException {
         resultset_buscarproduto = null;
         resultset_buscarproduto = objeto_buscarproduto.buscarProduto(getCodigoProduto());
-        return resultset_buscarproduto;
+        if (listaDeProdutos.contains(resultset_buscarproduto.getString("nome_produto"))) {
+            for (int i = 0; i < listaDeProdutos.size(); i++) {
+                if (listaDeProdutos.get(i).equals(resultset_buscarproduto.getString("nome_produto"))) {
+                    i = i + 2;
+                    int valorDaQuantidade = Integer.parseInt(listaDeProdutos.get(i)) + 1;
+                    listaDeProdutos.set(i, String.valueOf(valorDaQuantidade));
+                }
+            }
+        } else {
+            listaDeProdutos.add(resultset_buscarproduto.getString("nome_produto"));
+            listaDeProdutos.add(resultset_buscarproduto.getString("fabricante_produto"));
+            listaDeProdutos.add("1");
+        }
     }
-
-    public void criarArraysDaLista(int quantidadeDeLinhasTabela) {
-        listaDeCompraNome = new Object[quantidadeDeLinhasTabela];
-        listaDeCompraFornecedor = new Object[quantidadeDeLinhasTabela];
-        listaDeCompraQuantidade = new Object[quantidadeDeLinhasTabela];
-    }
-    public void criarArraysDosProdutosAtuais(int quantidadeDeLinhasTabela) {
-        produtosAtuaisNome = new Object[quantidadeDeLinhasTabela];
-        produtosAtuaisFornecedor = new Object[quantidadeDeLinhasTabela];
-        produtosAtuaisQuantidade = new Object[quantidadeDeLinhasTabela];
-    }
-
 }
