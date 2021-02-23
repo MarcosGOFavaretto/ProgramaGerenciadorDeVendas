@@ -16,7 +16,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -44,7 +43,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
     Document objeto_Document = null;
     DefaultTableModel objeto_Tabela;
     Calendar cal = null;
-    int quantidadeDeLinhasTabela = 0;
 
     public TelaPrincipal() throws SQLException {
         initComponents();
@@ -171,7 +169,22 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     private void adicionarLinhaTabela() throws SQLException {
-
+        objeto_ProdutosClass.setCodigoProduto(jTxtCodigoProduto.getText());
+        try {
+            objeto_ProdutosClass.buscarProdutoNoBanco();
+            objeto_Tabela.setNumRows(0);
+            int linhasDeProdutosNaLista = objeto_ProdutosClass.listaDeProdutos.size() / 3;
+            for (int i = 0; i < linhasDeProdutosNaLista; ++i) {
+                objeto_Tabela.addRow(new Object[]{
+                    objeto_ProdutosClass.listaDeProdutos.get(i * 3),
+                    objeto_ProdutosClass.listaDeProdutos.get(i * 3 + 1),
+                    objeto_ProdutosClass.listaDeProdutos.get(i * 3 + 2)
+                }
+                );
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void obterDataAtual() {
@@ -229,14 +242,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Lamento, o nome do usuário não foi informado!");
         } else {
             objeto_ClientesClass.setNome_cliente(jTxtNomeCliente.getText());
-            quantidadeDeLinhasTabela = jTbProdutos.getRowCount();
-            /* inserir dados da lista de produtos */
-//            objeto_ProdutosClass.criarArraysDaLista(quantidadeDeLinhasTabela);
-//            for (int i = 0; i < quantidadeDeLinhasTabela; i++) {
-//                objeto_ProdutosClass.listaDeCompraNome[i] = jTbProdutos.getValueAt(i, 0);
-//                objeto_ProdutosClass.listaDeCompraFornecedor[i] = jTbProdutos.getValueAt(i, 1);
-//                objeto_ProdutosClass.listaDeCompraQuantidade[i] = jTbProdutos.getValueAt(i, 2);
-//            }
             objeto_Document = new Document();
             criarNomeDoArquivo();
             // Criando as fontes:
@@ -263,21 +268,21 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 objeto_Document.add(new Paragraph(" "));
                 // Tabela:
                 criarCabecalhoDaTabelaEmPdf();
-//                if (objeto_Document.isOpen()) {
-//                    for (int i = 0; i < quantidadeDeLinhasTabela; i++) {
-//                        /* Inserir dados da lista de produtos */
-//                        PdfPCell celula1 = new PdfPCell(new Phrase(objeto_ProdutosClass.listaDeCompraNome[i].toString()));
-//                        celula1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-//                        PdfPCell celula2 = new PdfPCell(new Phrase(objeto_ProdutosClass.listaDeCompraFornecedor[i].toString()));
-//                        celula2.setHorizontalAlignment(Element.ALIGN_RIGHT);
-//                        PdfPCell celula3 = new PdfPCell(new Phrase(objeto_ProdutosClass.listaDeCompraQuantidade[i].toString()));
-//                        celula3.setHorizontalAlignment(Element.ALIGN_RIGHT);
-//                        objeto_PdfPTable.addCell(celula1);
-//                        objeto_PdfPTable.addCell(celula2);
-//                        objeto_PdfPTable.addCell(celula3);
-//                    }
-//                    System.gc();
-//                }
+                int linhasDeProdutosNaLista = objeto_ProdutosClass.listaDeProdutos.size() / 3;                    
+                if (objeto_Document.isOpen()) {
+                    for (int i = 0; i < linhasDeProdutosNaLista; ++i) {
+                        PdfPCell celula1 = new PdfPCell(new Phrase(objeto_ProdutosClass.listaDeProdutos.get(i * 3)));
+                        celula1.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                        PdfPCell celula2 = new PdfPCell(new Phrase(objeto_ProdutosClass.listaDeProdutos.get(i * 3 + 1)));
+                        celula2.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                        PdfPCell celula3 = new PdfPCell(new Phrase(objeto_ProdutosClass.listaDeProdutos.get(i * 3 + 2)));
+                        celula3.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                        objeto_PdfPTable.addCell(celula1);
+                        objeto_PdfPTable.addCell(celula2);
+                        objeto_PdfPTable.addCell(celula3);
+                    }
+                    System.gc();
+                }
                 objeto_Document.add(objeto_PdfPTable);
                 objeto_Paragraph_Padrao = null;
                 objeto_Paragraph_Padrao = new Paragraph("Nome da empresa", objeto_Font_Padrao);
@@ -303,20 +308,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         if (jTxtCodigoProduto.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Lamento, o código do produto não foi informado!");
         } else {
-            objeto_ProdutosClass.setCodigoProduto(jTxtCodigoProduto.getText());
             try {
-                objeto_ProdutosClass.buscarProdutoNoBanco();
-                objeto_Tabela.setNumRows(0);
-                int linhasDeProdutosNaLista = objeto_ProdutosClass.listaDeProdutos.size() / 3;
-                for (int i = 0; i < linhasDeProdutosNaLista; ++i) {
-                    objeto_Tabela.addRow(new Object[]{
-                        objeto_ProdutosClass.listaDeProdutos.get(i * 3),
-                        objeto_ProdutosClass.listaDeProdutos.get(i * 3 + 1),
-                        objeto_ProdutosClass.listaDeProdutos.get(i * 3 + 2)
-                    }
-                    );
-                    System.err.println(String.valueOf(i));
-                }
+                adicionarLinhaTabela();
             } catch (SQLException ex) {
                 Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             }
