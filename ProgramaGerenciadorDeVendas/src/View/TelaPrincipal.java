@@ -32,7 +32,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
     String nomeDoArquivo = "";
     ProdutosClass objeto_ProdutosClass = new ProdutosClass();
     ClientesClass objeto_ClientesClass = new ClientesClass();
-    private ResultSet resultset_ProdutoParaInserir = null;
     String[] array_DataAtual = null;
     String[] array_HorarioAtual = null;
     SimpleDateFormat mascara_Dia = null;
@@ -63,6 +62,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jTxtCodigoProduto = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -73,7 +73,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jBtnCancelar = new javax.swing.JButton();
         jBtnSalvar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        jTxtCodigoProduto = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PROGRAMA GERENCIADOR DE VENDAS");
@@ -85,6 +84,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(1080, 720));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jTxtCodigoProduto.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jTxtCodigoProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTxtCodigoProdutoActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jTxtCodigoProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 680, 716, -1));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel1.setText("PROGRAMA GERENCIADOR DE VENDAS");
@@ -104,7 +111,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
             new String [] {
                 "Nome do produto", "Fabricante", "Quantidade"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTbProdutos);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 80, 716, 508));
@@ -144,14 +159,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jLabel3.setText("CÓDIGO DO PRODUTO");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 650, -1, -1));
 
-        jTxtCodigoProduto.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jTxtCodigoProduto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTxtCodigoProdutoActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jTxtCodigoProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 680, 716, -1));
-
         setSize(new java.awt.Dimension(1096, 759));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
@@ -164,23 +171,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     private void adicionarLinhaTabela() throws SQLException {
-        resultset_ProdutoParaInserir = objeto_ProdutosClass.buscarProdutoNoBanco();
-        quantidadeDeLinhasTabela = jTbProdutos.getRowCount();
-//        objeto_ProdutosClass.criarArraysDosProdutosAtuais(quantidadeDeLinhasTabela);
-//        if (quantidadeDeLinhasTabela != 0) {
-//            for (int i = 0; i <= quantidadeDeLinhasTabela; i++) {
-//                objeto_ProdutosClass.produtosAtuaisNome[i] = jTbProdutos.getValueAt(i, 0);
-//                objeto_ProdutosClass.produtosAtuaisFornecedor[i] = jTbProdutos.getValueAt(i, 1);
-//                objeto_ProdutosClass.produtosAtuaisQuantidade[i] = jTbProdutos.getValueAt(i, 2);
-//            }
-//        }
-        objeto_Tabela.addRow(new Object[]{
-            resultset_ProdutoParaInserir.getString("nome_produto"),
-            resultset_ProdutoParaInserir.getString("fabricante_produto"),
-            String.valueOf(objeto_ProdutosClass.getQuantidadeProduto())
-        }
-        );
-        resultset_ProdutoParaInserir = null;
+
     }
 
     private void obterDataAtual() {
@@ -239,12 +230,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
         } else {
             objeto_ClientesClass.setNome_cliente(jTxtNomeCliente.getText());
             quantidadeDeLinhasTabela = jTbProdutos.getRowCount();
-            objeto_ProdutosClass.criarArraysDaLista(quantidadeDeLinhasTabela);
-            for (int i = 0; i < quantidadeDeLinhasTabela; i++) {
-                objeto_ProdutosClass.listaDeCompraNome[i] = jTbProdutos.getValueAt(i, 0);
-                objeto_ProdutosClass.listaDeCompraFornecedor[i] = jTbProdutos.getValueAt(i, 1);
-                objeto_ProdutosClass.listaDeCompraQuantidade[i] = jTbProdutos.getValueAt(i, 2);
-            }
+            /* inserir dados da lista de produtos */
+//            objeto_ProdutosClass.criarArraysDaLista(quantidadeDeLinhasTabela);
+//            for (int i = 0; i < quantidadeDeLinhasTabela; i++) {
+//                objeto_ProdutosClass.listaDeCompraNome[i] = jTbProdutos.getValueAt(i, 0);
+//                objeto_ProdutosClass.listaDeCompraFornecedor[i] = jTbProdutos.getValueAt(i, 1);
+//                objeto_ProdutosClass.listaDeCompraQuantidade[i] = jTbProdutos.getValueAt(i, 2);
+//            }
             objeto_Document = new Document();
             criarNomeDoArquivo();
             // Criando as fontes:
@@ -271,20 +263,21 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 objeto_Document.add(new Paragraph(" "));
                 // Tabela:
                 criarCabecalhoDaTabelaEmPdf();
-                if (objeto_Document.isOpen()) {
-                    for (int i = 0; i < quantidadeDeLinhasTabela; i++) {
-                        PdfPCell celula1 = new PdfPCell(new Phrase(objeto_ProdutosClass.listaDeCompraNome[i].toString()));
-                        celula1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-                        PdfPCell celula2 = new PdfPCell(new Phrase(objeto_ProdutosClass.listaDeCompraFornecedor[i].toString()));
-                        celula2.setHorizontalAlignment(Element.ALIGN_RIGHT);
-                        PdfPCell celula3 = new PdfPCell(new Phrase(objeto_ProdutosClass.listaDeCompraQuantidade[i].toString()));
-                        celula3.setHorizontalAlignment(Element.ALIGN_RIGHT);
-                        objeto_PdfPTable.addCell(celula1);
-                        objeto_PdfPTable.addCell(celula2);
-                        objeto_PdfPTable.addCell(celula3);
-                    }
-                    System.gc();
-                }
+//                if (objeto_Document.isOpen()) {
+//                    for (int i = 0; i < quantidadeDeLinhasTabela; i++) {
+//                        /* Inserir dados da lista de produtos */
+//                        PdfPCell celula1 = new PdfPCell(new Phrase(objeto_ProdutosClass.listaDeCompraNome[i].toString()));
+//                        celula1.setHorizontalAlignment(Element.ALIGN_RIGHT);
+//                        PdfPCell celula2 = new PdfPCell(new Phrase(objeto_ProdutosClass.listaDeCompraFornecedor[i].toString()));
+//                        celula2.setHorizontalAlignment(Element.ALIGN_RIGHT);
+//                        PdfPCell celula3 = new PdfPCell(new Phrase(objeto_ProdutosClass.listaDeCompraQuantidade[i].toString()));
+//                        celula3.setHorizontalAlignment(Element.ALIGN_RIGHT);
+//                        objeto_PdfPTable.addCell(celula1);
+//                        objeto_PdfPTable.addCell(celula2);
+//                        objeto_PdfPTable.addCell(celula3);
+//                    }
+//                    System.gc();
+//                }
                 objeto_Document.add(objeto_PdfPTable);
                 objeto_Paragraph_Padrao = null;
                 objeto_Paragraph_Padrao = new Paragraph("Nome da empresa", objeto_Font_Padrao);
@@ -312,7 +305,18 @@ public class TelaPrincipal extends javax.swing.JFrame {
         } else {
             objeto_ProdutosClass.setCodigoProduto(jTxtCodigoProduto.getText());
             try {
-                adicionarLinhaTabela();
+                objeto_ProdutosClass.buscarProdutoNoBanco();
+                objeto_Tabela.setNumRows(0);
+                int linhasDeProdutosNaLista = objeto_ProdutosClass.listaDeProdutos.size() / 3;
+                for (int i = 0; i < linhasDeProdutosNaLista; ++i) {
+                    objeto_Tabela.addRow(new Object[]{
+                        objeto_ProdutosClass.listaDeProdutos.get(i * 3),
+                        objeto_ProdutosClass.listaDeProdutos.get(i * 3 + 1),
+                        objeto_ProdutosClass.listaDeProdutos.get(i * 3 + 2)
+                    }
+                    );
+                    System.err.println(String.valueOf(i));
+                }
             } catch (SQLException ex) {
                 Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             }
