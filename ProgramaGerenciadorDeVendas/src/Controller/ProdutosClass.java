@@ -12,7 +12,7 @@ public class ProdutosClass {
     private String nomeProduto;
     private String fabricanteProduto;
     private float quantidadeProduto;
-    BuscarProduto objeto_buscarproduto = new BuscarProduto();
+    private BuscarProduto objeto_buscarproduto = new BuscarProduto();
     private ResultSet resultset_buscarproduto;
     public ArrayList<String> listaDeProdutos = new ArrayList();
 
