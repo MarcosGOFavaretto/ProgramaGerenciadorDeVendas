@@ -1,6 +1,6 @@
 package Controller;
 
-public class ClientesClass {
+public class ClasseClientes {
 
     private String nomeDoCliente;
 

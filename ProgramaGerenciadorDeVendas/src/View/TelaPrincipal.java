@@ -1,7 +1,7 @@
 package View;
 
-import Controller.ClientesClass;
-import Controller.ProdutosClass;
+import Controller.ClasseClientes;
+import Controller.ClasseProdutos;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -29,25 +29,21 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     // VARIÁVEIS GLOBAIS DA CLASSE:
     String nomeDoArquivo = "";
-    ProdutosClass objeto_ProdutosClass = new ProdutosClass();
-    ClientesClass objeto_ClientesClass = new ClientesClass();
-    String[] array_DataAtual = null;
-    String[] array_HorarioAtual = null;
-    SimpleDateFormat mascara_Dia = null;
-    SimpleDateFormat mascara_Horas = null;
-    Date data_Atual = null;
+    ClasseProdutos objetoDaClasseProdutos = new ClasseProdutos();
+    ClasseClientes objetoDaClasseClientes = new ClasseClientes();
+    Date dataAtual = null;
+    SimpleDateFormat mascaraDataAtual = null;
 
-    PdfPTable objeto_PdfPTable = null;
-    PdfPTable objeto_PdfPTable_rodape = null;
-    PdfPCell objeto_PdfPCell = null;
-    Document objeto_Document = null;
-    DefaultTableModel objeto_Tabela;
-    Calendar cal = null;
+    PdfPTable objetoDaClassePdfPTable = null;
+    PdfPTable objetoDaClassePdfPTableParaRodape = null;
+    PdfPCell objetoDaClassePdfPCell = null;
+    Document objetoDaClasseDocument = null;
+    DefaultTableModel objetoDaClasseDefaultTableModel;
     int linhasDeProdutosNaLista = 0;
 
     public TelaPrincipal() throws SQLException {
         initComponents();
-        objeto_Tabela = (DefaultTableModel) jTbProdutos.getModel();
+        objetoDaClasseDefaultTableModel = (DefaultTableModel) jTbProdutos.getModel();
         limparInformacoes();
     }
 
@@ -159,22 +155,22 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void limparInformacoes() {
-        objeto_Tabela.setNumRows(0);
+        objetoDaClasseDefaultTableModel.setNumRows(0);
         jTxtNomeCliente.setText("");
         jTxtCodigoProduto.requestFocus();
     }
 
     private void adicionarLinhaTabela() throws SQLException {
-        objeto_ProdutosClass.setCodigoDoProduto(jTxtCodigoProduto.getText());
+        objetoDaClasseProdutos.setCodigoDoProduto(jTxtCodigoProduto.getText());
         try {
-            objeto_ProdutosClass.buscarProdutoNoBanco();
-            objeto_Tabela.setNumRows(0);
-            linhasDeProdutosNaLista = objeto_ProdutosClass.listaDeProdutosJaAdicionadosNaCompra.size() / 3;
+            objetoDaClasseProdutos.buscarProdutoNoBanco();
+            objetoDaClasseDefaultTableModel.setNumRows(0);
+            linhasDeProdutosNaLista = objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.size() / 3;
             for (int i = 0; i < linhasDeProdutosNaLista; ++i) {
-                objeto_Tabela.addRow(new Object[]{
-                    objeto_ProdutosClass.listaDeProdutosJaAdicionadosNaCompra.get(i * 3),
-                    objeto_ProdutosClass.listaDeProdutosJaAdicionadosNaCompra.get(i * 3 + 1),
-                    objeto_ProdutosClass.listaDeProdutosJaAdicionadosNaCompra.get(i * 3 + 2)
+                objetoDaClasseDefaultTableModel.addRow(new Object[]{
+                    objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.get(i * 3),
+                    objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.get(i * 3 + 1),
+                    objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.get(i * 3 + 2)
                 }
                 );
             }
@@ -184,27 +180,26 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     private void obterDataAtual() {
-        data_Atual = new Date();
-        mascara_Dia = new SimpleDateFormat("dd.MM.yyyy");
+        dataAtual = new Date();
+        mascaraDataAtual = new SimpleDateFormat("dd.MM.yyyy");
     }
 
     private void criarNomeDoArquivo() {
         obterDataAtual();
-        String nomeArquivoPDFSaida = mascara_Dia.format(data_Atual) + " - " + objeto_ClientesClass.getNomeDoCliente() + ".pdf";
-        nomeDoArquivo = nomeArquivoPDFSaida;
+        nomeDoArquivo = mascaraDataAtual.format(dataAtual) + " - " + objetoDaClasseClientes.getNomeDoCliente() + ".pdf";
     }
 
     private void criarCabecalhoDaTabelaEmPdf() {
-        objeto_PdfPTable = new PdfPTable(new float[]{10f, 5f, 3f});
-        objeto_PdfPCell = new PdfPCell(new Phrase("NOME DO PRODUTO"));
-        objeto_PdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        objeto_PdfPTable.addCell(objeto_PdfPCell);
-        objeto_PdfPCell = new PdfPCell(new Phrase("FABRICANTE"));
-        objeto_PdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        objeto_PdfPTable.addCell(objeto_PdfPCell);
-        objeto_PdfPCell = new PdfPCell(new Phrase("QUANTIDADE"));
-        objeto_PdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        objeto_PdfPTable.addCell(objeto_PdfPCell);
+        objetoDaClassePdfPTable = new PdfPTable(new float[]{10f, 5f, 3f});
+        objetoDaClassePdfPCell = new PdfPCell(new Phrase("NOME DO PRODUTO"));
+        objetoDaClassePdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        objetoDaClassePdfPTable.addCell(objetoDaClassePdfPCell);
+        objetoDaClassePdfPCell = new PdfPCell(new Phrase("FABRICANTE"));
+        objetoDaClassePdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        objetoDaClassePdfPTable.addCell(objetoDaClassePdfPCell);
+        objetoDaClassePdfPCell = new PdfPCell(new Phrase("QUANTIDADE"));
+        objetoDaClassePdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        objetoDaClassePdfPTable.addCell(objetoDaClassePdfPCell);
     }
 
     private void abrirPDF() {
@@ -237,57 +232,57 @@ public class TelaPrincipal extends javax.swing.JFrame {
         if (jTxtNomeCliente.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Lamento, o nome do usuário não foi informado!");
         } else {
-            objeto_ClientesClass.setNomeDoCliente(jTxtNomeCliente.getText());
-            objeto_Document = new Document();
+            objetoDaClasseClientes.setNomeDoCliente(jTxtNomeCliente.getText());
+            objetoDaClasseDocument = new Document();
             criarNomeDoArquivo();
             // Criando as fontes:
             Font objeto_Font_Cabecalho = new Font(Font.FontFamily.TIMES_ROMAN, 20, Font.BOLD);
             Font objeto_Font_Padrao = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL);
             Paragraph objeto_Paragraph_Cabecalho = new Paragraph("LISTA DE SAÍDA DE PRODUTOS", objeto_Font_Cabecalho);
             objeto_Paragraph_Cabecalho.setAlignment(Element.ALIGN_CENTER);
-            Paragraph objeto_Paragraph_Padrao = new Paragraph("Este arquivo foi gerado de forma autônoma através do sistema Programa Gerenciador de Vendas (PGDV). Abaixo, têm-se os dados registrados a cerca dos produtos. Este arquivo registra os artigos comprados por " + objeto_ClientesClass.getNomeDoCliente() + " no dia " + mascara_Dia.format(data_Atual) + ".", objeto_Font_Padrao);
+            Paragraph objeto_Paragraph_Padrao = new Paragraph("Este arquivo foi gerado de forma autônoma através do sistema Programa Gerenciador de Vendas (PGDV). Abaixo, têm-se os dados registrados a cerca dos produtos. Este arquivo registra os artigos comprados por " + objetoDaClasseClientes.getNomeDoCliente() + " no dia " + mascaraDataAtual.format(dataAtual) + ".", objeto_Font_Padrao);
             objeto_Paragraph_Padrao.setAlignment(Element.ALIGN_JUSTIFIED);
             objeto_Paragraph_Padrao.setFirstLineIndent(10);
             try {
-                PdfWriter.getInstance(objeto_Document, new FileOutputStream(nomeDoArquivo));
-                objeto_Document.open();
+                PdfWriter.getInstance(objetoDaClasseDocument, new FileOutputStream(nomeDoArquivo));
+                objetoDaClasseDocument.open();
                 // Metadados
-                objeto_Document.addAuthor("Sistema Gerenciador De Vendas");
-                objeto_Document.addLanguage("pt-br");
-                objeto_Document.addTitle("LISTA DE SAÍDA DE PRODUTOS");
-                objeto_Document.addCreationDate();
+                objetoDaClasseDocument.addAuthor("Sistema Gerenciador De Vendas");
+                objetoDaClasseDocument.addLanguage("pt-br");
+                objetoDaClasseDocument.addTitle("LISTA DE SAÍDA DE PRODUTOS");
+                objetoDaClasseDocument.addCreationDate();
                 // CONTEÚDO DO ARQUIVO:
                 // Texto:
-                objeto_Document.add(objeto_Paragraph_Cabecalho);
-                objeto_Document.add(new Paragraph(" "));
-                objeto_Document.add(objeto_Paragraph_Padrao);
-                objeto_Document.add(new Paragraph(" "));
+                objetoDaClasseDocument.add(objeto_Paragraph_Cabecalho);
+                objetoDaClasseDocument.add(new Paragraph(" "));
+                objetoDaClasseDocument.add(objeto_Paragraph_Padrao);
+                objetoDaClasseDocument.add(new Paragraph(" "));
                 // Tabela:
                 criarCabecalhoDaTabelaEmPdf();
-                linhasDeProdutosNaLista = objeto_ProdutosClass.listaDeProdutosJaAdicionadosNaCompra.size() / 3;
-                if (objeto_Document.isOpen()) {
+                linhasDeProdutosNaLista = objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.size() / 3;
+                if (objetoDaClasseDocument.isOpen()) {
                     for (int i = 0; i < linhasDeProdutosNaLista; ++i) {
-                        PdfPCell celula1 = new PdfPCell(new Phrase(objeto_ProdutosClass.listaDeProdutosJaAdicionadosNaCompra.get(i * 3)));
+                        PdfPCell celula1 = new PdfPCell(new Phrase(objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.get(i * 3)));
                         celula1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-                        PdfPCell celula2 = new PdfPCell(new Phrase(objeto_ProdutosClass.listaDeProdutosJaAdicionadosNaCompra.get(i * 3 + 1)));
+                        PdfPCell celula2 = new PdfPCell(new Phrase(objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.get(i * 3 + 1)));
                         celula2.setHorizontalAlignment(Element.ALIGN_RIGHT);
-                        PdfPCell celula3 = new PdfPCell(new Phrase(objeto_ProdutosClass.listaDeProdutosJaAdicionadosNaCompra.get(i * 3 + 2)));
+                        PdfPCell celula3 = new PdfPCell(new Phrase(objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.get(i * 3 + 2)));
                         celula3.setHorizontalAlignment(Element.ALIGN_RIGHT);
-                        objeto_PdfPTable.addCell(celula1);
-                        objeto_PdfPTable.addCell(celula2);
-                        objeto_PdfPTable.addCell(celula3);
+                        objetoDaClassePdfPTable.addCell(celula1);
+                        objetoDaClassePdfPTable.addCell(celula2);
+                        objetoDaClassePdfPTable.addCell(celula3);
                     }
                     System.gc();
                 }
-                objeto_Document.add(objeto_PdfPTable);
+                objetoDaClasseDocument.add(objetoDaClassePdfPTable);
                 objeto_Paragraph_Padrao = null;
                 objeto_Paragraph_Padrao = new Paragraph("Nome da empresa", objeto_Font_Padrao);
                 objeto_Paragraph_Padrao.setAlignment(Element.ALIGN_CENTER);
-                objeto_Document.add(objeto_Paragraph_Padrao);
+                objetoDaClasseDocument.add(objeto_Paragraph_Padrao);
             } catch (FileNotFoundException | DocumentException erro_GerarPdf) {
                 System.err.println("Problema ao tentar gerar o arquivo em formato PDF, ERRO: " + erro_GerarPdf);
             } finally {
-                objeto_Document.close();
+                objetoDaClasseDocument.close();
             }
             if (JOptionPane.showConfirmDialog(this, "Deseja imprimir a lista de produtos?", "IMPRIMIR?!", JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION) {
                 JOptionPane.showMessageDialog(this, "Arquivo enviado para a impressora!", "OPERAÇÃO CONCLUÍDA!", JOptionPane.INFORMATION_MESSAGE);
