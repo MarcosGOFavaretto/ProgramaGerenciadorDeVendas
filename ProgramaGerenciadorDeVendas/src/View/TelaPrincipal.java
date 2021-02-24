@@ -165,16 +165,16 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     private void adicionarLinhaTabela() throws SQLException {
-        objeto_ProdutosClass.setCodigoProduto(jTxtCodigoProduto.getText());
+        objeto_ProdutosClass.setCodigoDoProduto(jTxtCodigoProduto.getText());
         try {
             objeto_ProdutosClass.buscarProdutoNoBanco();
             objeto_Tabela.setNumRows(0);
-            linhasDeProdutosNaLista = objeto_ProdutosClass.listaDeProdutos.size() / 3;
+            linhasDeProdutosNaLista = objeto_ProdutosClass.listaDeProdutosJaAdicionadosNaCompra.size() / 3;
             for (int i = 0; i < linhasDeProdutosNaLista; ++i) {
                 objeto_Tabela.addRow(new Object[]{
-                    objeto_ProdutosClass.listaDeProdutos.get(i * 3),
-                    objeto_ProdutosClass.listaDeProdutos.get(i * 3 + 1),
-                    objeto_ProdutosClass.listaDeProdutos.get(i * 3 + 2)
+                    objeto_ProdutosClass.listaDeProdutosJaAdicionadosNaCompra.get(i * 3),
+                    objeto_ProdutosClass.listaDeProdutosJaAdicionadosNaCompra.get(i * 3 + 1),
+                    objeto_ProdutosClass.listaDeProdutosJaAdicionadosNaCompra.get(i * 3 + 2)
                 }
                 );
             }
@@ -190,7 +190,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void criarNomeDoArquivo() {
         obterDataAtual();
-        String nomeArquivoPDFSaida = mascara_Dia.format(data_Atual) + " - " + objeto_ClientesClass.getNome_cliente() + ".pdf";
+        String nomeArquivoPDFSaida = mascara_Dia.format(data_Atual) + " - " + objeto_ClientesClass.getNomeDoCliente() + ".pdf";
         nomeDoArquivo = nomeArquivoPDFSaida;
     }
 
@@ -237,7 +237,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         if (jTxtNomeCliente.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Lamento, o nome do usuário não foi informado!");
         } else {
-            objeto_ClientesClass.setNome_cliente(jTxtNomeCliente.getText());
+            objeto_ClientesClass.setNomeDoCliente(jTxtNomeCliente.getText());
             objeto_Document = new Document();
             criarNomeDoArquivo();
             // Criando as fontes:
@@ -245,7 +245,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             Font objeto_Font_Padrao = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL);
             Paragraph objeto_Paragraph_Cabecalho = new Paragraph("LISTA DE SAÍDA DE PRODUTOS", objeto_Font_Cabecalho);
             objeto_Paragraph_Cabecalho.setAlignment(Element.ALIGN_CENTER);
-            Paragraph objeto_Paragraph_Padrao = new Paragraph("Este arquivo foi gerado de forma autônoma através do sistema Programa Gerenciador de Vendas (PGDV). Abaixo, têm-se os dados registrados a cerca dos produtos. Este arquivo registra os artigos comprados por " + objeto_ClientesClass.getNome_cliente() + " no dia " + mascara_Dia.format(data_Atual) + ".", objeto_Font_Padrao);
+            Paragraph objeto_Paragraph_Padrao = new Paragraph("Este arquivo foi gerado de forma autônoma através do sistema Programa Gerenciador de Vendas (PGDV). Abaixo, têm-se os dados registrados a cerca dos produtos. Este arquivo registra os artigos comprados por " + objeto_ClientesClass.getNomeDoCliente() + " no dia " + mascara_Dia.format(data_Atual) + ".", objeto_Font_Padrao);
             objeto_Paragraph_Padrao.setAlignment(Element.ALIGN_JUSTIFIED);
             objeto_Paragraph_Padrao.setFirstLineIndent(10);
             try {
@@ -264,14 +264,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 objeto_Document.add(new Paragraph(" "));
                 // Tabela:
                 criarCabecalhoDaTabelaEmPdf();
-                linhasDeProdutosNaLista = objeto_ProdutosClass.listaDeProdutos.size() / 3;
+                linhasDeProdutosNaLista = objeto_ProdutosClass.listaDeProdutosJaAdicionadosNaCompra.size() / 3;
                 if (objeto_Document.isOpen()) {
                     for (int i = 0; i < linhasDeProdutosNaLista; ++i) {
-                        PdfPCell celula1 = new PdfPCell(new Phrase(objeto_ProdutosClass.listaDeProdutos.get(i * 3)));
+                        PdfPCell celula1 = new PdfPCell(new Phrase(objeto_ProdutosClass.listaDeProdutosJaAdicionadosNaCompra.get(i * 3)));
                         celula1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-                        PdfPCell celula2 = new PdfPCell(new Phrase(objeto_ProdutosClass.listaDeProdutos.get(i * 3 + 1)));
+                        PdfPCell celula2 = new PdfPCell(new Phrase(objeto_ProdutosClass.listaDeProdutosJaAdicionadosNaCompra.get(i * 3 + 1)));
                         celula2.setHorizontalAlignment(Element.ALIGN_RIGHT);
-                        PdfPCell celula3 = new PdfPCell(new Phrase(objeto_ProdutosClass.listaDeProdutos.get(i * 3 + 2)));
+                        PdfPCell celula3 = new PdfPCell(new Phrase(objeto_ProdutosClass.listaDeProdutosJaAdicionadosNaCompra.get(i * 3 + 2)));
                         celula3.setHorizontalAlignment(Element.ALIGN_RIGHT);
                         objeto_PdfPTable.addCell(celula1);
                         objeto_PdfPTable.addCell(celula2);

@@ -7,65 +7,61 @@ import java.util.ArrayList;
 
 public class ProdutosClass {
 
-    // DECLARANDO AS VARIÁVEIS GLOBAIS DA CLASSE:
-    private String codigoProduto;
-    private String nomeProduto;
-    private String fabricanteProduto;
-    private float quantidadeProduto;
-    private BuscarProduto objeto_buscarproduto = new BuscarProduto();
-    private ResultSet resultset_buscarproduto;
-    public ArrayList<String> listaDeProdutos = new ArrayList();
+    private String codigoDoProduto;
+    private String nomeDoProduto;
+    private String fabricanteDoProduto;
+    private float quantidadeDoProduto;
+    private BuscarProduto objetoDaClasseBuscarProduto = new BuscarProduto();
+    private ResultSet resultadoDaBuscaPeloProdutoNoBancoDeDados;
+    public ArrayList<String> listaDeProdutosJaAdicionadosNaCompra = new ArrayList();
 
-    // CRIANDO OS MÉTODOS "GETTERS":
-    public String getCodigoProduto() {
-        return codigoProduto;
+    public String getCodigoDoProduto() {
+        return codigoDoProduto;
     }
 
-    public String getNomeProduto() {
-        return nomeProduto;
+    public String getNomeDoProduto() {
+        return nomeDoProduto;
     }
 
-    public String getFabricanteProduto() {
-        return fabricanteProduto;
+    public String getFabricanteDoProduto() {
+        return fabricanteDoProduto;
     }
 
-    public float getQuantidadeProduto() {
-        return quantidadeProduto;
+    public float getQuantidadeDoProduto() {
+        return quantidadeDoProduto;
     }
 
-    // CRIANDO OS MÉTODOS "SETTERS":
-    public void setCodigoProduto(String codigoProduto) {
-        this.codigoProduto = codigoProduto;
+    public void setCodigoDoProduto(String codigoDoProduto) {
+        this.codigoDoProduto = codigoDoProduto;
     }
 
-    public void setNomeProduto(String nomeProduto) {
-        this.nomeProduto = nomeProduto;
+    public void setNomeDoProduto(String nomeDoProduto) {
+        this.nomeDoProduto = nomeDoProduto;
     }
 
-    public void setFabricanteProduto(String fabricanteProduto) {
-        this.fabricanteProduto = fabricanteProduto;
+    public void setFabricanteDoProduto(String fabricanteDoProduto) {
+        this.fabricanteDoProduto = fabricanteDoProduto;
     }
 
-    public void setQuantidadeProduto(float quantidadeProduto) {
-        this.quantidadeProduto = quantidadeProduto;
+    public void setQuantidadeDoProduto(float quantidadeDoProduto) {
+        this.quantidadeDoProduto = quantidadeDoProduto;
     }
 
-    // CRIANDO MÉTODO QUE IRÁ INICIAR A BUSCA NO BANCO DE DADOS:
     public void buscarProdutoNoBanco() throws SQLException {
-        resultset_buscarproduto = null;
-        resultset_buscarproduto = objeto_buscarproduto.buscarProduto(getCodigoProduto());
-        if (listaDeProdutos.contains(resultset_buscarproduto.getString("nome_produto"))) {
-            for (int i = 0; i < listaDeProdutos.size(); i++) {
-                if (listaDeProdutos.get(i).equals(resultset_buscarproduto.getString("nome_produto"))) {
+        resultadoDaBuscaPeloProdutoNoBancoDeDados = null;
+        resultadoDaBuscaPeloProdutoNoBancoDeDados = objetoDaClasseBuscarProduto.buscarProduto(getCodigoDoProduto());
+        if (listaDeProdutosJaAdicionadosNaCompra.contains(resultadoDaBuscaPeloProdutoNoBancoDeDados.getString("nome_produto"))) {
+            for (int i = 0; i < listaDeProdutosJaAdicionadosNaCompra.size(); i++) {
+                if (listaDeProdutosJaAdicionadosNaCompra.get(i).equals(resultadoDaBuscaPeloProdutoNoBancoDeDados.getString("nome_produto"))) {
                     i = i + 2;
-                    int valorDaQuantidade = Integer.parseInt(listaDeProdutos.get(i)) + 1;
-                    listaDeProdutos.set(i, String.valueOf(valorDaQuantidade));
+                    int valorDaQuantidade = Integer.parseInt(listaDeProdutosJaAdicionadosNaCompra.get(i)) + 1;
+                    listaDeProdutosJaAdicionadosNaCompra.set(i, String.valueOf(valorDaQuantidade));
                 }
             }
         } else {
-            listaDeProdutos.add(resultset_buscarproduto.getString("nome_produto"));
-            listaDeProdutos.add(resultset_buscarproduto.getString("fabricante_produto"));
-            listaDeProdutos.add("1");
+            listaDeProdutosJaAdicionadosNaCompra.add(resultadoDaBuscaPeloProdutoNoBancoDeDados.getString("nome_produto"));
+            listaDeProdutosJaAdicionadosNaCompra.add(resultadoDaBuscaPeloProdutoNoBancoDeDados.getString("fabricante_produto"));
+            listaDeProdutosJaAdicionadosNaCompra.add("1");
         }
     }
 }
