@@ -4,21 +4,19 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class ConexaoBancoDeDados {
+public class ConexaoComBancoDeDados {
 
-    // DECLARANDO AS VARIÁVEIS GLOBAIS DA CLASSE:
-    public static Connection conexao;
-    private final String url = "jdbc:sqlite:/";
-    private final String projeto = "D:\\Users\\T-Gamer\\ProgramaGerenciadorDeVendas\\ProgramaGerenciadorDeVendas\\bancodedados";
-    private final String arquivoBancoDeDados = "/bancodedados.db";
+    public static Connection objetoDaClasseConnection;
+    private final String urlDaConexao = "jdbc:sqlite:/";
+    private final String caminhoDoProjeto = "D:\\Users\\T-Gamer\\ProgramaGerenciadorDeVendas\\ProgramaGerenciadorDeVendas\\bancodedados";
+    private final String arquivoDoBancoDeDados = "/bancodedados.db";
 
-    // CRIANDO MÉTODO QUE IRÁ ABRIR A CONEXÃO COM O BANCO DE DADOS:
     public boolean abrirConexao() {
         try {
-            if (conexao == null) {
+            if (objetoDaClasseConnection == null) {
                 System.out.println("CONEXÃO: Não instanciada!");
                 Class.forName("org.sqlite.JDBC");
-                conexao = DriverManager.getConnection(url + projeto + arquivoBancoDeDados);
+                objetoDaClasseConnection = DriverManager.getConnection(urlDaConexao + caminhoDoProjeto + arquivoDoBancoDeDados);
             } else {
                 System.out.println("CONEXÃO: Realizada!");
             }
@@ -29,12 +27,11 @@ public class ConexaoBancoDeDados {
         }
     }
 
-    // CRIANDO MÉTODO QUE IRÁ FECHAR A CONEXÃO COM O BANCO DE DADOS:
     public boolean fecharConexao() {
         try {
-            if (conexao != null) {
-                this.conexao.close();
-                conexao.clearWarnings();
+            if (objetoDaClasseConnection != null) {
+                this.objetoDaClasseConnection.close();
+                objetoDaClasseConnection.clearWarnings();
                 System.out.println("CONEXÃO = Fechada");
                 return true;
             } else {

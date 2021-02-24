@@ -1,6 +1,6 @@
 package Controller;
 
-import Model.BuscarProduto;
+import Model.BuscarProdutoNoBancoDeDados;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ public class ProdutosClass {
     private String nomeDoProduto;
     private String fabricanteDoProduto;
     private float quantidadeDoProduto;
-    private BuscarProduto objetoDaClasseBuscarProduto = new BuscarProduto();
+    private BuscarProdutoNoBancoDeDados objetoDaClasseBuscarProduto = new BuscarProdutoNoBancoDeDados();
     private ResultSet resultadoDaBuscaPeloProdutoNoBancoDeDados;
     public ArrayList<String> listaDeProdutosJaAdicionadosNaCompra = new ArrayList();
 
@@ -49,7 +49,7 @@ public class ProdutosClass {
 
     public void buscarProdutoNoBanco() throws SQLException {
         resultadoDaBuscaPeloProdutoNoBancoDeDados = null;
-        resultadoDaBuscaPeloProdutoNoBancoDeDados = objetoDaClasseBuscarProduto.buscarProduto(getCodigoDoProduto());
+        resultadoDaBuscaPeloProdutoNoBancoDeDados = objetoDaClasseBuscarProduto.buscarProdutoNoBancoDeDados(getCodigoDoProduto());
         if (listaDeProdutosJaAdicionadosNaCompra.contains(resultadoDaBuscaPeloProdutoNoBancoDeDados.getString("nome_produto"))) {
             for (int i = 0; i < listaDeProdutosJaAdicionadosNaCompra.size(); i++) {
                 if (listaDeProdutosJaAdicionadosNaCompra.get(i).equals(resultadoDaBuscaPeloProdutoNoBancoDeDados.getString("nome_produto"))) {
