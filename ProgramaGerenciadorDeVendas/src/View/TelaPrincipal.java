@@ -27,22 +27,21 @@ import javax.swing.table.DefaultTableModel;
 public class TelaPrincipal extends javax.swing.JFrame {
 
     // VARIÁVEIS GLOBAIS DA CLASSE:
-    String nomeDoArquivo = "";
+    DefaultTableModel objetoDaClasseDefaultTableModel;
     ClasseProdutos objetoDaClasseProdutos = new ClasseProdutos();
     ClasseClientes objetoDaClasseClientes = new ClasseClientes();
+    Document objetoDaClasseDocument = null;
+    Paragraph objeto_Paragraph_Cabecalho = null;
     Font objeto_Font_Cabecalho = new Font(Font.FontFamily.TIMES_ROMAN, 20, Font.BOLD);
+    Paragraph objeto_Paragraph_Padrao = null;
     Font objeto_Font_Padrao = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL);
-    Date dataAtual = null;
-    SimpleDateFormat mascaraDataAtual = null;
-
     PdfPTable objetoDaClassePdfPTable = null;
     PdfPCell objetoDaClassePdfPCell = null;
-    Document objetoDaClasseDocument = null;
-    DefaultTableModel objetoDaClasseDefaultTableModel;
-    TelaInsercaoManual telaInsercaoManual_objeto = null;
-    Paragraph objeto_Paragraph_Cabecalho = null;
-    Paragraph objeto_Paragraph_Padrao = null;
+    TelaInsercaoManual objetoDaTelaDeInsercaoManual = null;
     int linhasDeProdutosNaLista = 0;
+    Date dataAtual = null;
+    SimpleDateFormat mascaraDataAtual = null;
+    String nomeDoArquivo = "";
 
     public TelaPrincipal() throws SQLException {
         initComponents();
@@ -163,7 +162,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void limparInformacoes() {
         objetoDaClasseDefaultTableModel.setNumRows(0);
-        jTxtNomeCliente.setText("");
+        prepararSistemaParaAdicionarNovoProduto();
+    }
+
+    private void prepararSistemaParaAdicionarNovoProduto() {
+        jTxtCodigoProduto.setText("");
         jTxtCodigoProduto.requestFocus();
     }
 
@@ -186,35 +189,22 @@ public class TelaPrincipal extends javax.swing.JFrame {
         }
     }
 
-    private void obterDataAtual() {
-        dataAtual = new Date();
-        mascaraDataAtual = new SimpleDateFormat("dd.MM.yyyy");
-    }
-
     private void criarNomeDoArquivo() {
         obterDataAtual();
         nomeDoArquivo = mascaraDataAtual.format(dataAtual) + " - " + objetoDaClasseClientes.getNomeDoCliente() + ".pdf";
     }
 
-    private void criarCabecalhoDaTabelaDoArquivo() {
-        objetoDaClassePdfPTable = new PdfPTable(new float[]{10f, 5f, 3f});
-        objetoDaClassePdfPCell = new PdfPCell(new Phrase("NOME DO PRODUTO"));
-        objetoDaClassePdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        objetoDaClassePdfPTable.addCell(objetoDaClassePdfPCell);
-        objetoDaClassePdfPCell = new PdfPCell(new Phrase("FABRICANTE"));
-        objetoDaClassePdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        objetoDaClassePdfPTable.addCell(objetoDaClassePdfPCell);
-        objetoDaClassePdfPCell = new PdfPCell(new Phrase("QUANTIDADE"));
-        objetoDaClassePdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        objetoDaClassePdfPTable.addCell(objetoDaClassePdfPCell);
+    private void obterDataAtual() {
+        dataAtual = new Date();
+        mascaraDataAtual = new SimpleDateFormat("dd.MM.yyyy");
     }
 
-    private void abrirArquivoGerado() {
-        try {
-            Desktop.getDesktop().open(new File(this.nomeDoArquivo));
-        } catch (IOException erroAoAbrirArquivoGerado) {
-            System.err.println("Problema ao tentar abrir o arquivo gerado, ERRO: " + erroAoAbrirArquivoGerado);
-        }
+    private void criarCabecalhoDoArquivo() {
+        objeto_Paragraph_Cabecalho = new Paragraph("LISTA DE SAÍDA DE PRODUTOS", objeto_Font_Cabecalho);
+        objeto_Paragraph_Cabecalho.setAlignment(Element.ALIGN_CENTER);
+        objeto_Paragraph_Padrao = new Paragraph("Este arquivo foi gerado de forma autônoma através do sistema Programa Gerenciador de Vendas (PGDV). Abaixo, têm-se os dados registrados a cerca dos produtos. Este arquivo registra os artigos comprados por " + objetoDaClasseClientes.getNomeDoCliente() + " no dia " + mascaraDataAtual.format(dataAtual) + ".", objeto_Font_Padrao);
+        objeto_Paragraph_Padrao.setAlignment(Element.ALIGN_JUSTIFIED);
+        objeto_Paragraph_Padrao.setFirstLineIndent(10);
     }
 
     private void adicionarMetadadosAoArquivo() {
@@ -229,6 +219,19 @@ public class TelaPrincipal extends javax.swing.JFrame {
         objetoDaClasseDocument.add(new Paragraph(" "));
         objetoDaClasseDocument.add(objeto_Paragraph_Padrao);
         objetoDaClasseDocument.add(new Paragraph(" "));
+    }
+
+    private void criarCabecalhoDaTabelaDoArquivo() {
+        objetoDaClassePdfPTable = new PdfPTable(new float[]{10f, 5f, 3f});
+        objetoDaClassePdfPCell = new PdfPCell(new Phrase("NOME DO PRODUTO"));
+        objetoDaClassePdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        objetoDaClassePdfPTable.addCell(objetoDaClassePdfPCell);
+        objetoDaClassePdfPCell = new PdfPCell(new Phrase("FABRICANTE"));
+        objetoDaClassePdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        objetoDaClassePdfPTable.addCell(objetoDaClassePdfPCell);
+        objetoDaClassePdfPCell = new PdfPCell(new Phrase("QUANTIDADE"));
+        objetoDaClassePdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        objetoDaClassePdfPTable.addCell(objetoDaClassePdfPCell);
     }
 
     private void inserirDadosDaTabelaDoArquivo() {
@@ -249,6 +252,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
         }
     }
 
+    private void adicionarTabelaDeDadosAoArquivo() throws DocumentException {
+        objetoDaClasseDocument.add(objetoDaClassePdfPTable);
+    }
+
     private void adicionarRodapeAoArquivo() throws DocumentException {
         objeto_Paragraph_Padrao = null;
         objeto_Paragraph_Padrao = new Paragraph("Nome da empresa", objeto_Font_Padrao);
@@ -256,16 +263,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
         objetoDaClasseDocument.add(objeto_Paragraph_Padrao);
     }
 
-    private void adicionarTabelaDeDadosAoArquivo() throws DocumentException {
-        objetoDaClasseDocument.add(objetoDaClassePdfPTable);
-    }
-
-    private void criarCabecalhoDoArquivo() {
-        objeto_Paragraph_Cabecalho = new Paragraph("LISTA DE SAÍDA DE PRODUTOS", objeto_Font_Cabecalho);
-        objeto_Paragraph_Cabecalho.setAlignment(Element.ALIGN_CENTER);
-        objeto_Paragraph_Padrao = new Paragraph("Este arquivo foi gerado de forma autônoma através do sistema Programa Gerenciador de Vendas (PGDV). Abaixo, têm-se os dados registrados a cerca dos produtos. Este arquivo registra os artigos comprados por " + objetoDaClasseClientes.getNomeDoCliente() + " no dia " + mascaraDataAtual.format(dataAtual) + ".", objeto_Font_Padrao);
-        objeto_Paragraph_Padrao.setAlignment(Element.ALIGN_JUSTIFIED);
-        objeto_Paragraph_Padrao.setFirstLineIndent(10);
+    private void abrirArquivoGerado() {
+        try {
+            Desktop.getDesktop().open(new File(this.nomeDoArquivo));
+        } catch (IOException erroAoAbrirArquivoGerado) {
+            System.err.println("Problema ao tentar abrir o arquivo gerado, ERRO: " + erroAoAbrirArquivoGerado);
+        }
     }
 
     private void exibirMensagemDeImpressão() {
@@ -287,14 +290,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
         }
     }
 
-    private void prepararSistemaParaIniciarOutraBusca() {
-        jTxtCodigoProduto.setText("");
-        jTxtCodigoProduto.requestFocus();
-    }
     private void jBtnInserirManualmenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnInserirManualmenteActionPerformed
         // CÓDIGO DO BOTÃO "INSERIR MANUALMENTE":
-        telaInsercaoManual_objeto = new TelaInsercaoManual();
-        telaInsercaoManual_objeto.setVisible(true);
+        objetoDaTelaDeInsercaoManual = new TelaInsercaoManual();
+        objetoDaTelaDeInsercaoManual.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jBtnInserirManualmenteActionPerformed
 
@@ -340,7 +339,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             } catch (SQLException erroAoAdicionarLinhaNaTabelaDoSistema) {
                 System.err.println("Problema ao tentar adicionar linha na tebela do sistema, ERRO: " + erroAoAdicionarLinhaNaTabelaDoSistema);
             }
-            prepararSistemaParaIniciarOutraBusca();
+            prepararSistemaParaAdicionarNovoProduto();
         }
     }//GEN-LAST:event_jTxtCodigoProdutoActionPerformed
 
