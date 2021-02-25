@@ -163,11 +163,16 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void limparInformacoes() {
         objetoDaClasseDefaultTableModel.setNumRows(0);
         prepararSistemaParaAdicionarNovoProduto();
+        limparDadosDasCompras();
     }
 
     private void prepararSistemaParaAdicionarNovoProduto() {
         jTxtCodigoProduto.setText("");
         jTxtCodigoProduto.requestFocus();
+    }
+
+    private void limparDadosDasCompras() {
+        objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.clear();
     }
 
     private void adicionarLinhaNaTabelaDoSistema() throws SQLException {
