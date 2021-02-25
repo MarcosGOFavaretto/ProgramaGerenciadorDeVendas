@@ -26,7 +26,6 @@ import javax.swing.table.DefaultTableModel;
 
 public class TelaPrincipal extends javax.swing.JFrame {
 
-    // VARIÁVEIS GLOBAIS DA CLASSE:
     DefaultTableModel objetoDaClasseDefaultTableModel;
     ClasseProdutos objetoDaClasseProdutos = new ClasseProdutos();
     ClasseClientes objetoDaClasseClientes = new ClasseClientes();
