@@ -11,8 +11,8 @@ public class ClasseProdutos {
     private String nomeDoProduto;
     private String fabricanteDoProduto;
     private float quantidadeDoProduto;
-    private BuscarProdutoNoBancoDeDados objetoDaClasseBuscarProduto = new BuscarProdutoNoBancoDeDados();
     private ResultSet resultadoDaBuscaPeloProdutoNoBancoDeDados;
+    private BuscarProdutoNoBancoDeDados objetoDaClasseBuscarProduto = new BuscarProdutoNoBancoDeDados();
     public ArrayList<String> listaDeProdutosJaAdicionadosNaCompra = new ArrayList();
 
     public String getCodigoDoProduto() {
