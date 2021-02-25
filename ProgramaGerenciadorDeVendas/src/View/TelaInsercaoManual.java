@@ -97,8 +97,8 @@ public class TelaInsercaoManual extends javax.swing.JFrame {
     private void jTxtVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtVoltarActionPerformed
         // CÓDIGO DO BOTÃO "VOLTAR":
         try {
-            TelaPrincipal telaPrincipal_objeto = new TelaPrincipal();
-            telaPrincipal_objeto.setVisible(true);
+            TelaPrincipal objetoDaTelaPrincipal = new TelaPrincipal();
+            objetoDaTelaPrincipal.setVisible(true);
         this.setVisible(false);
         } catch (SQLException ex) {
             Logger.getLogger(TelaInsercaoManual.class.getName()).log(Level.SEVERE, null, ex);
