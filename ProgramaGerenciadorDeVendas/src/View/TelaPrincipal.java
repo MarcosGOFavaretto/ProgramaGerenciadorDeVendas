@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Icon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -161,6 +162,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void limparInformacoes() {
         objetoDaClasseDefaultTableModel.setNumRows(0);
+        jTxtNomeCliente.setText("");
         prepararSistemaParaAdicionarNovoProduto();
         limparDadosDasCompras();
     }
@@ -276,21 +278,21 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     private void exibirMensagemDeImpressão() {
-        if (JOptionPane.showConfirmDialog(this, "Deseja imprimir a lista de produtos?", "IMPRIMIR?!", JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION) {
+        if (JOptionPane.showConfirmDialog(this, "Deseja imprimir a lista de produtos?", "IMPRIMIR?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
             JOptionPane.showMessageDialog(this, "Arquivo enviado para a impressora!", "OPERAÇÃO CONCLUÍDA!", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(this, "Arquivo PDF gerado!", "OPERAÇÃO CONCLUÍDA!", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Arquivo gerado!", "OPERAÇÃO CONCLUÍDA!", JOptionPane.INFORMATION_MESSAGE);
             abrirArquivoGerado();
             limparInformacoes();
         }
     }
 
     private void exibirMensagemDeCancelamento() {
-        if (JOptionPane.showConfirmDialog(this, "Deseja limpar TODOS os campos?") == JOptionPane.YES_OPTION) {
+        if (JOptionPane.showConfirmDialog(this, "Deseja LIMPAR todos os campos da tela?") == JOptionPane.YES_OPTION) {
             limparInformacoes();
             JOptionPane.showMessageDialog(this, "Informações apagadas!", "OPERAÇÃO CONCLUÍDA!", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(this, "Nenhuma informação foi alterada!", "ALERTA!", 2);
+            JOptionPane.showMessageDialog(this, "NENHUMA informação foi alterada!", "ALERTA!", 2);
         }
     }
 
@@ -309,7 +311,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void jBtnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSalvarActionPerformed
         // CÓDIGO DO BOTÃO "SALVAR":
         if (jTxtNomeCliente.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Lamento, o nome do usuário não foi informado!");
+            JOptionPane.showMessageDialog(this, "Lamento, o NOME DO USUÁRIO não foi informado!", "ALERTA!", 2);
         } else {
             objetoDaClasseClientes.setNomeDoCliente(jTxtNomeCliente.getText());
             objetoDaClasseDocument = new Document();
@@ -336,7 +338,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void jTxtCodigoProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtCodigoProdutoActionPerformed
         // CÓDIGO DO CAMPO DE TEXTO "CÓDIGO DO PRODUTO":
         if (jTxtCodigoProduto.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Lamento, o código do produto não foi informado!");
+            JOptionPane.showMessageDialog(this, "Lamento, o CÓDIGO DO PRODUTO não foi informado!", "ALERTA!", 2);
         } else {
             try {
                 adicionarLinhaNaTabelaDoSistema();
