@@ -14,15 +14,12 @@ public class ConexaoComBancoDeDados {
     public boolean abrirConexao() {
         try {
             if (objetoDaClasseConnection == null) {
-                System.out.println("CONEXÃO: Não instanciada!");
                 Class.forName("org.sqlite.JDBC");
                 objetoDaClasseConnection = DriverManager.getConnection(urlDaConexao + caminhoDoProjeto + arquivoDoBancoDeDados);
-            } else {
-                System.out.println("CONEXÃO: Realizada!");
             }
             return true;
-        } catch (ClassNotFoundException | SQLException erro_AbrirConexao) {
-            System.err.println("Problema ao tentar abrir a conexao com o banco de dados, ERRO: " + erro_AbrirConexao);
+        } catch (ClassNotFoundException | SQLException erroAoTentarAbrirConexao) {
+            System.err.println("Problema ao tentar abrir a conexao com o banco de dados, ERRO: " + erroAoTentarAbrirConexao);
             return false;
         }
     }
@@ -32,13 +29,12 @@ public class ConexaoComBancoDeDados {
             if (objetoDaClasseConnection != null) {
                 this.objetoDaClasseConnection.close();
                 objetoDaClasseConnection.clearWarnings();
-                System.out.println("CONEXÃO = Fechada");
                 return true;
             } else {
                 return false;
             }
-        } catch (SQLException erro_fecharConexao) {
-            System.err.println("Problema ao tentar fechar a conexão com o banco de dados, ERRO: " + erro_fecharConexao);
+        } catch (SQLException erroAoTentarFecharConexao) {
+            System.err.println("Problema ao tentar fechar a conexão com o banco de dados, ERRO: " + erroAoTentarFecharConexao);
             return false;
         }
     }

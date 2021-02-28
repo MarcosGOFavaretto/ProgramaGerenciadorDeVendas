@@ -325,7 +325,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 adicionarTabelaDeDadosAoArquivo();
                 adicionarRodapeAoArquivo();
             } catch (FileNotFoundException | DocumentException erroAoGerarArquivo) {
-                System.err.println("Problema ao tentar gerar o arquivo, ERRO: " + erroAoGerarArquivo);
+                System.err.println("Problema ao tentar gerar o arquivo PDF, ERRO: " + erroAoGerarArquivo);
             } finally {
                 objetoDaClasseDocument.close();
             }
