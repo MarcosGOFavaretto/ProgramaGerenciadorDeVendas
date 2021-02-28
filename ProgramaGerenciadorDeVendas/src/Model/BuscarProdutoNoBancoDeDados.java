@@ -18,8 +18,8 @@ public class BuscarProdutoNoBancoDeDados {
             statementParaBuscaNoBancoDeDados = objetoDaClasseConexaoComBancoDeDados.objetoDaClasseConnection.prepareStatement(comandoSQL);
             statementParaBuscaNoBancoDeDados.setString(1, codigoDoProduto);
             resultadoDaBuscaPeloProdutoNoBancoDeDados = statementParaBuscaNoBancoDeDados.executeQuery();
-        } catch (SQLException erro_buscarproduto) {
-            System.err.println("Problema ao tentar buscar o produto no banco de dados, ERRO: " + erro_buscarproduto);
+        } catch (SQLException erroAoTentarBuscarProdutos) {
+            System.err.println("Problema ao tentar buscar o produto no banco de dados, ERRO: " + erroAoTentarBuscarProdutos);
         }
         return resultadoDaBuscaPeloProdutoNoBancoDeDados;
     }
