@@ -27,8 +27,8 @@ import javax.swing.table.DefaultTableModel;
 public class TelaPrincipal extends javax.swing.JFrame {
 
     DefaultTableModel objetoDaClasseDefaultTableModel;
-    ClasseProdutos objetoDaClasseProdutos = new ClasseProdutos();
-    ClasseClientes objetoDaClasseClientes = new ClasseClientes();
+    ClasseProdutos objetoDaClasseProdutos;
+    ClasseClientes objetoDaClasseClientes;
     Document objetoDaClasseDocument = null;
     Paragraph objeto_Paragraph_Cabecalho = null;
     Font objeto_Font_Cabecalho = new Font(Font.FontFamily.TIMES_ROMAN, 20, Font.BOLD);
@@ -44,7 +44,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     public TelaPrincipal() throws SQLException {
         initComponents();
-        criarInstaciaParaDefaultTableModel();
+        instanciarClasses();
         limparInformacoes();
     }
 
@@ -155,8 +155,19 @@ public class TelaPrincipal extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void criarInstaciaParaDefaultTableModel() {
-        objetoDaClasseDefaultTableModel = (DefaultTableModel) jTbProdutos.getModel();
+    private void instanciarClasses() throws SQLException {
+        if (objetoDaClasseDefaultTableModel == null) {
+            objetoDaClasseDefaultTableModel = (DefaultTableModel) jTbProdutos.getModel();
+        }
+        if (objetoDaClasseProdutos == null) {
+            objetoDaClasseProdutos = new ClasseProdutos();
+        }
+        if (objetoDaClasseClientes == null) {
+            objetoDaClasseClientes = new ClasseClientes();
+        }
+        if (objetoDaTelaDeInsercaoManual == null) {
+            objetoDaTelaDeInsercaoManual = new TelaInsercaoManual();
+        }
     }
 
     private void limparInformacoes() {
@@ -172,7 +183,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     private void limparDadosDasCompras() {
-        objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.clear();
+
+        if (objetoDaTelaDeInsercaoManual.janelaDeInsercaoManualFoiAberta) {
+            objetoDaTelaDeInsercaoManual.janelaDeInsercaoManualFoiAberta = false;
+        } else {
+            objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.clear();
+        }
     }
 
     private void adicionarLinhaNaTabelaDoSistema() throws SQLException {
@@ -297,7 +313,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void jBtnInserirManualmenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnInserirManualmenteActionPerformed
         // CÓDIGO DO BOTÃO "INSERIR MANUALMENTE":
-        objetoDaTelaDeInsercaoManual = new TelaInsercaoManual();
         objetoDaTelaDeInsercaoManual.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jBtnInserirManualmenteActionPerformed

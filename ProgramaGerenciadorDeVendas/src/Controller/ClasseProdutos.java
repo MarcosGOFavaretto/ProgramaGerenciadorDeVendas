@@ -64,4 +64,13 @@ public class ClasseProdutos {
             listaDeProdutosJaAdicionadosNaCompra.add("1");
         }
     }
+
+    public void adicionarProdutoNaListaDeProdutosJáAdicinadosNaCompra() {
+        listaDeProdutosJaAdicionadosNaCompra.add(getNomeDoProduto());
+        listaDeProdutosJaAdicionadosNaCompra.add(getFabricanteDoProduto());
+        listaDeProdutosJaAdicionadosNaCompra.add(String.valueOf(getQuantidadeDoProduto()));
+        setNomeDoProduto("");
+        setFabricanteDoProduto("");
+        setQuantidadeDoProduto(0);
+    }
 }
