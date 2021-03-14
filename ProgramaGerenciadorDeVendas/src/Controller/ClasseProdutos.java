@@ -54,21 +54,31 @@ public class ClasseProdutos {
             for (int i = 0; i < listaDeProdutosJaAdicionadosNaCompra.size(); i++) {
                 if (listaDeProdutosJaAdicionadosNaCompra.get(i).equals(resultadoDaBuscaPeloProdutoNoBancoDeDados.getString("nome_produto"))) {
                     i = i + 2;
-                    int valorDaQuantidade = Integer.parseInt(listaDeProdutosJaAdicionadosNaCompra.get(i)) + 1;
+                    float valorDaQuantidade = Float.valueOf(listaDeProdutosJaAdicionadosNaCompra.get(i)) + 1;
                     listaDeProdutosJaAdicionadosNaCompra.set(i, String.valueOf(valorDaQuantidade));
                 }
             }
         } else {
             listaDeProdutosJaAdicionadosNaCompra.add(resultadoDaBuscaPeloProdutoNoBancoDeDados.getString("nome_produto"));
             listaDeProdutosJaAdicionadosNaCompra.add(resultadoDaBuscaPeloProdutoNoBancoDeDados.getString("fabricante_produto"));
-            listaDeProdutosJaAdicionadosNaCompra.add("1");
+            listaDeProdutosJaAdicionadosNaCompra.add("1.0");
         }
     }
 
     public void adicionarProdutoNaListaDeProdutosJáAdicinadosNaCompra() {
-        listaDeProdutosJaAdicionadosNaCompra.add(getNomeDoProduto());
-        listaDeProdutosJaAdicionadosNaCompra.add(getFabricanteDoProduto());
-        listaDeProdutosJaAdicionadosNaCompra.add(String.valueOf(getQuantidadeDoProduto()));
+        if (listaDeProdutosJaAdicionadosNaCompra.contains(getNomeDoProduto())) {
+            for (int i = 0; i < listaDeProdutosJaAdicionadosNaCompra.size(); i++) {
+                if (listaDeProdutosJaAdicionadosNaCompra.get(i).equals(getNomeDoProduto())) {
+                    i = i + 2;
+                    float valorDaQuantidade = Float.valueOf(listaDeProdutosJaAdicionadosNaCompra.get(i)) + getQuantidadeDoProduto();
+                    listaDeProdutosJaAdicionadosNaCompra.set(i, String.valueOf(valorDaQuantidade));
+                }
+            }
+        } else {
+            listaDeProdutosJaAdicionadosNaCompra.add(getNomeDoProduto());
+            listaDeProdutosJaAdicionadosNaCompra.add(getFabricanteDoProduto());
+            listaDeProdutosJaAdicionadosNaCompra.add(String.valueOf(getQuantidadeDoProduto()));
+        }
         setNomeDoProduto("");
         setFabricanteDoProduto("");
         setQuantidadeDoProduto(0);
