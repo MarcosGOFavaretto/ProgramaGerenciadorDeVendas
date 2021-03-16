@@ -45,7 +45,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         initComponents();
         instanciarClasses();
         limparInformacoes();
-        desativarInsercaoManual();
+        //desativarInsercaoManual();
+        ativarInsercaoManual();
     }
 
     /**
@@ -178,6 +179,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 200, -1, -1));
 
         jTxtQuantidade.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jTxtQuantidade.setText("1");
         getContentPane().add(jTxtQuantidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 220, 100, -1));
 
         jBtnInserir.setText("INSERIR");
@@ -454,7 +456,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         } else {
             try {
                 adicionarLinhaNaTabelaDoSistema(true);
-                desativarInsercaoManual();
+                //desativarInsercaoManual();
                 limparCamposDaInsercaoManual();
             } catch (SQLException erroAoAdicionarLinhaNaTabelaDoSistema) {
                 System.err.println("Problema ao tentar adicionar linha na tebela do sistema, ERRO: " + erroAoAdicionarLinhaNaTabelaDoSistema);
@@ -506,7 +508,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
     }
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBtnCancelar;

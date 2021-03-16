@@ -52,7 +52,7 @@ public class ClasseProdutos {
         resultadoDaBuscaPeloProdutoNoBancoDeDados = objetoDaClasseBuscarProduto.buscarProdutoNoBancoDeDados(getCodigoDoProduto());
         if (listaDeProdutosJaAdicionadosNaCompra.contains(resultadoDaBuscaPeloProdutoNoBancoDeDados.getString("nome_produto"))) {
             for (int i = 0; i < listaDeProdutosJaAdicionadosNaCompra.size(); i++) {
-                if (listaDeProdutosJaAdicionadosNaCompra.get(i).equals(resultadoDaBuscaPeloProdutoNoBancoDeDados.getString("nome_produto"))) {
+                if (listaDeProdutosJaAdicionadosNaCompra.get(i).equals(resultadoDaBuscaPeloProdutoNoBancoDeDados.getString("nome_produto")) && listaDeProdutosJaAdicionadosNaCompra.get(i + 1).equals(resultadoDaBuscaPeloProdutoNoBancoDeDados.getString("fabricante_produto"))) {
                     i = i + 2;
                     float valorDaQuantidade = Float.valueOf(listaDeProdutosJaAdicionadosNaCompra.get(i)) + 1;
                     listaDeProdutosJaAdicionadosNaCompra.set(i, String.valueOf(valorDaQuantidade));
@@ -66,15 +66,19 @@ public class ClasseProdutos {
     }
 
     public void adicionarProdutoNaListaDeProdutosJáAdicinadosNaCompra() {
-        if (listaDeProdutosJaAdicionadosNaCompra.contains(getNomeDoProduto())) {
-            for (int i = 0; i < listaDeProdutosJaAdicionadosNaCompra.size(); i++) {
-                if (listaDeProdutosJaAdicionadosNaCompra.get(i).equals(getNomeDoProduto())) {
-                    i = i + 2;
-                    float valorDaQuantidade = Float.valueOf(listaDeProdutosJaAdicionadosNaCompra.get(i)) + getQuantidadeDoProduto();
-                    listaDeProdutosJaAdicionadosNaCompra.set(i, String.valueOf(valorDaQuantidade));
-                }
+        boolean produtoExisteNalista = false;
+        for (int i = 0; i < listaDeProdutosJaAdicionadosNaCompra.size(); i++) {
+            if (listaDeProdutosJaAdicionadosNaCompra.get(i).equals(getNomeDoProduto()) && listaDeProdutosJaAdicionadosNaCompra.get(i + 1).equals(getFabricanteDoProduto())) {
+                produtoExisteNalista = true;
+                i = i + 2;
+                float valorDaQuantidade = Float.valueOf(listaDeProdutosJaAdicionadosNaCompra.get(i)) + getQuantidadeDoProduto();
+                listaDeProdutosJaAdicionadosNaCompra.set(i, String.valueOf(valorDaQuantidade));
+                break;
+            } else {
+                produtoExisteNalista = false;
             }
-        } else {
+        }
+        if (!produtoExisteNalista || listaDeProdutosJaAdicionadosNaCompra.isEmpty()) {
             listaDeProdutosJaAdicionadosNaCompra.add(getNomeDoProduto());
             listaDeProdutosJaAdicionadosNaCompra.add(getFabricanteDoProduto());
             listaDeProdutosJaAdicionadosNaCompra.add(String.valueOf(getQuantidadeDoProduto()));
