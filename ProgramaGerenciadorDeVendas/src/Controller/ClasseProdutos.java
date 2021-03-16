@@ -14,6 +14,7 @@ public class ClasseProdutos {
     private ResultSet resultadoDaBuscaPeloProdutoNoBancoDeDados;
     private BuscarProdutoNoBancoDeDados objetoDaClasseBuscarProduto = new BuscarProdutoNoBancoDeDados();
     public ArrayList<String> listaDeProdutosJaAdicionadosNaCompra = new ArrayList();
+    private boolean aQuantidadeInformadaVaiResultarEmUmaQuantidadeMenorQueZero;
 
     public String getCodigoDoProduto() {
         return codigoDoProduto;
@@ -29,6 +30,10 @@ public class ClasseProdutos {
 
     public float getQuantidadeDoProduto() {
         return quantidadeDoProduto;
+    }
+
+    public boolean getAQuantidadeInformadaVaiResultarEmUmaQuantidadeMenorQueZero() {
+        return aQuantidadeInformadaVaiResultarEmUmaQuantidadeMenorQueZero;
     }
 
     public void setCodigoDoProduto(String codigoDoProduto) {
@@ -71,8 +76,19 @@ public class ClasseProdutos {
             if (listaDeProdutosJaAdicionadosNaCompra.get(i).equals(getNomeDoProduto()) && listaDeProdutosJaAdicionadosNaCompra.get(i + 1).equals(getFabricanteDoProduto())) {
                 produtoExisteNalista = true;
                 i = i + 2;
-                float valorDaQuantidade = Float.valueOf(listaDeProdutosJaAdicionadosNaCompra.get(i)) + getQuantidadeDoProduto();
-                listaDeProdutosJaAdicionadosNaCompra.set(i, String.valueOf(valorDaQuantidade));
+                if (getQuantidadeDoProduto() < -Float.valueOf(listaDeProdutosJaAdicionadosNaCompra.get(i))) {
+                    aQuantidadeInformadaVaiResultarEmUmaQuantidadeMenorQueZero = true;
+                } else {
+                    aQuantidadeInformadaVaiResultarEmUmaQuantidadeMenorQueZero = false;
+                    float valorDaQuantidade = Float.valueOf(listaDeProdutosJaAdicionadosNaCompra.get(i)) + getQuantidadeDoProduto();
+                    if (valorDaQuantidade <= 0) {
+                        listaDeProdutosJaAdicionadosNaCompra.remove(i - 2);
+                        listaDeProdutosJaAdicionadosNaCompra.remove(i - 1);
+                        listaDeProdutosJaAdicionadosNaCompra.remove(i);
+                    } else {
+                        listaDeProdutosJaAdicionadosNaCompra.set(i, String.valueOf(valorDaQuantidade));
+                    }
+                }
                 break;
             } else {
                 produtoExisteNalista = false;

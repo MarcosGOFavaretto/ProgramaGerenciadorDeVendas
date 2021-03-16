@@ -45,8 +45,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         initComponents();
         instanciarClasses();
         limparInformacoes();
-        //desativarInsercaoManual();
-        ativarInsercaoManual();
+        desativarInsercaoManual();
     }
 
     /**
@@ -179,7 +178,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 200, -1, -1));
 
         jTxtQuantidade.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jTxtQuantidade.setText("1");
+        jTxtQuantidade.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTxtQuantidadeActionPerformed(evt);
+            }
+        });
         getContentPane().add(jTxtQuantidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 220, 100, -1));
 
         jBtnInserir.setText("INSERIR");
@@ -236,16 +239,21 @@ public class TelaPrincipal extends javax.swing.JFrame {
             objetoDaClasseProdutos.setFabricanteDoProduto(jTxtFabricanteProduto.getText());
             objetoDaClasseProdutos.setQuantidadeDoProduto(Float.valueOf(jTxtQuantidade.getText()));
             objetoDaClasseProdutos.adicionarProdutoNaListaDeProdutosJáAdicinadosNaCompra();
-            objetoDaClasseDefaultTableModel.setNumRows(0);
-            linhasDeProdutosNaLista = objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.size() / 3;
-            for (int i = 0; i < linhasDeProdutosNaLista; ++i) {
-                objetoDaClasseDefaultTableModel.addRow(new Object[]{
-                    objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.get(i * 3),
-                    objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.get(i * 3 + 1),
-                    objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.get(i * 3 + 2)
+            if (objetoDaClasseProdutos.getAQuantidadeInformadaVaiResultarEmUmaQuantidadeMenorQueZero()) {
+                exibirMensagemDeQuantidadeInválida();
+            } else {
+                objetoDaClasseDefaultTableModel.setNumRows(0);
+                linhasDeProdutosNaLista = objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.size() / 3;
+                for (int i = 0; i < linhasDeProdutosNaLista; ++i) {
+                    objetoDaClasseDefaultTableModel.addRow(new Object[]{
+                        objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.get(i * 3),
+                        objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.get(i * 3 + 1),
+                        objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.get(i * 3 + 2)
+                    }
+                    );
                 }
-                );
             }
+
         } else {
             objetoDaClasseProdutos.setCodigoDoProduto(jTxtCodigoProduto.getText());
             try {
@@ -348,14 +356,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         }
     }
 
-    private void exibirMensagemDeImpressão() {
-        if (JOptionPane.showConfirmDialog(this, "Deseja imprimir a lista de produtos?", "IMPRIMIR?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-            JOptionPane.showMessageDialog(this, "Arquivo enviado para a impressora!", "OPERAÇÃO CONCLUÍDA!", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(this, "Arquivo gerado!", "OPERAÇÃO CONCLUÍDA!", JOptionPane.INFORMATION_MESSAGE);
-            abrirArquivoGerado();
-            limparInformacoes();
-        }
+    private void exibirMensagemDeArquivoSalvo() {
+        JOptionPane.showMessageDialog(this, "O arquivo foi gerado e salvo!", "OPERAÇÃO CONCLUÍDA!", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void exibirMensagemDeCancelamento() {
@@ -365,6 +367,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "NENHUMA informação foi alterada!", "ALERTA!", 2);
         }
+    }
+
+    private void exibirMensagemDeQuantidadeInválida() {
+        JOptionPane.showMessageDialog(this, "O número inserido no campo de quantidade é inválido! Por favor, revise as informações", "ALERTA!", 2);
     }
 
     private void ativarInsercaoManual() {
@@ -432,7 +438,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
             } finally {
                 objetoDaClasseDocument.close();
             }
-            exibirMensagemDeImpressão();
+            exibirMensagemDeArquivoSalvo();
+            abrirArquivoGerado();
+            limparInformacoes();
         }
     }//GEN-LAST:event_jBtnSalvarActionPerformed
 
@@ -456,7 +464,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         } else {
             try {
                 adicionarLinhaNaTabelaDoSistema(true);
-                //desativarInsercaoManual();
+                desativarInsercaoManual();
                 limparCamposDaInsercaoManual();
             } catch (SQLException erroAoAdicionarLinhaNaTabelaDoSistema) {
                 System.err.println("Problema ao tentar adicionar linha na tebela do sistema, ERRO: " + erroAoAdicionarLinhaNaTabelaDoSistema);
@@ -472,6 +480,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
         desativarInsercaoManual();
         limparCamposDaInsercaoManual();
     }//GEN-LAST:event_jBtnCancelarInsercaoManualActionPerformed
+
+    private void jTxtQuantidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtQuantidadeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTxtQuantidadeActionPerformed
 
     /**
      * @param args the command line arguments
