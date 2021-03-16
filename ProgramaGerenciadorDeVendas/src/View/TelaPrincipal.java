@@ -27,8 +27,8 @@ import javax.swing.table.DefaultTableModel;
 public class TelaPrincipal extends javax.swing.JFrame {
 
     DefaultTableModel objetoDaClasseDefaultTableModel;
-    ClasseProdutos objetoDaClasseProdutos = new ClasseProdutos();
-    ClasseClientes objetoDaClasseClientes = new ClasseClientes();
+    ClasseProdutos objetoDaClasseProdutos;
+    ClasseClientes objetoDaClasseClientes;
     Document objetoDaClasseDocument = null;
     Paragraph objeto_Paragraph_Cabecalho = null;
     Font objeto_Font_Cabecalho = new Font(Font.FontFamily.TIMES_ROMAN, 20, Font.BOLD);
@@ -36,7 +36,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
     Font objeto_Font_Padrao = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL);
     PdfPTable objetoDaClassePdfPTable = null;
     PdfPCell objetoDaClassePdfPCell = null;
-    TelaInsercaoManual objetoDaTelaDeInsercaoManual = null;
     int linhasDeProdutosNaLista = 0;
     Date dataAtual = null;
     SimpleDateFormat mascaraDataAtual = null;
@@ -44,8 +43,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     public TelaPrincipal() throws SQLException {
         initComponents();
-        criarInstaciaParaDefaultTableModel();
+        instanciarClasses();
         limparInformacoes();
+        desativarInsercaoManual();
     }
 
     /**
@@ -68,6 +68,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jBtnCancelar = new javax.swing.JButton();
         jBtnSalvar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jTxtNomeProduto = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jTxtFabricanteProduto = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jTxtQuantidade = new javax.swing.JTextField();
+        jBtnInserir = new javax.swing.JButton();
+        jBtnCancelarInsercaoManual = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PROGRAMA GERENCIADOR DE VENDAS");
@@ -86,7 +94,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 jTxtCodigoProdutoActionPerformed(evt);
             }
         });
-        getContentPane().add(jTxtCodigoProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 680, 716, -1));
+        getContentPane().add(jTxtCodigoProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 680, 716, -1));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel1.setText("PROGRAMA GERENCIADOR DE VENDAS");
@@ -114,14 +122,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTbProdutos);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 80, 716, 508));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 716, 508));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel2.setText("NOME COMPLETO DO CLIENTE:");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 590, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 590, -1, -1));
 
         jTxtNomeCliente.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        getContentPane().add(jTxtNomeCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 620, 716, -1));
+        getContentPane().add(jTxtNomeCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 620, 716, -1));
 
         jBtnInserirManualmente.setText("INSERIR MANUALMENTE");
         jBtnInserirManualmente.addActionListener(new java.awt.event.ActionListener() {
@@ -129,7 +137,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 jBtnInserirManualmenteActionPerformed(evt);
             }
         });
-        getContentPane().add(jBtnInserirManualmente, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 620, -1, -1));
+        getContentPane().add(jBtnInserirManualmente, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 680, 170, -1));
 
         jBtnCancelar.setText("CANCELAR");
         jBtnCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -137,7 +145,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 jBtnCancelarActionPerformed(evt);
             }
         });
-        getContentPane().add(jBtnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 590, 151, -1));
+        getContentPane().add(jBtnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(901, 650, 170, -1));
 
         jBtnSalvar.setText("SALVAR");
         jBtnSalvar.addActionListener(new java.awt.event.ActionListener() {
@@ -145,18 +153,68 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 jBtnSalvarActionPerformed(evt);
             }
         });
-        getContentPane().add(jBtnSalvar, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 560, 150, -1));
+        getContentPane().add(jBtnSalvar, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 620, 170, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setText("CÓDIGO DO PRODUTO");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 650, -1, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 650, -1, -1));
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel4.setText("Nome do produto:");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 80, -1, -1));
+
+        jTxtNomeProduto.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        getContentPane().add(jTxtNomeProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 100, 320, -1));
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel5.setText("Fabricante do produto:");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 140, -1, -1));
+
+        jTxtFabricanteProduto.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        getContentPane().add(jTxtFabricanteProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 160, 320, -1));
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel6.setText("Quantidade:");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 200, -1, -1));
+
+        jTxtQuantidade.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jTxtQuantidade.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTxtQuantidadeActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jTxtQuantidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 220, 100, -1));
+
+        jBtnInserir.setText("INSERIR");
+        jBtnInserir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnInserirActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jBtnInserir, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 220, 100, -1));
+
+        jBtnCancelarInsercaoManual.setText("CANCELAR");
+        jBtnCancelarInsercaoManual.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnCancelarInsercaoManualActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jBtnCancelarInsercaoManual, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 220, 100, -1));
 
         setSize(new java.awt.Dimension(1096, 759));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void criarInstaciaParaDefaultTableModel() {
-        objetoDaClasseDefaultTableModel = (DefaultTableModel) jTbProdutos.getModel();
+    private void instanciarClasses() throws SQLException {
+        if (objetoDaClasseDefaultTableModel == null) {
+            objetoDaClasseDefaultTableModel = (DefaultTableModel) jTbProdutos.getModel();
+        }
+        if (objetoDaClasseProdutos == null) {
+            objetoDaClasseProdutos = new ClasseProdutos();
+        }
+        if (objetoDaClasseClientes == null) {
+            objetoDaClasseClientes = new ClasseClientes();
+        }
     }
 
     private void limparInformacoes() {
@@ -175,22 +233,44 @@ public class TelaPrincipal extends javax.swing.JFrame {
         objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.clear();
     }
 
-    private void adicionarLinhaNaTabelaDoSistema() throws SQLException {
-        objetoDaClasseProdutos.setCodigoDoProduto(jTxtCodigoProduto.getText());
-        try {
-            objetoDaClasseProdutos.buscarProdutoNoBanco();
-            objetoDaClasseDefaultTableModel.setNumRows(0);
-            linhasDeProdutosNaLista = objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.size() / 3;
-            for (int i = 0; i < linhasDeProdutosNaLista; ++i) {
-                objetoDaClasseDefaultTableModel.addRow(new Object[]{
-                    objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.get(i * 3),
-                    objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.get(i * 3 + 1),
-                    objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.get(i * 3 + 2)
+    private void adicionarLinhaNaTabelaDoSistema(boolean seTrataDeUmaInsercaoManual) throws SQLException {
+        if (seTrataDeUmaInsercaoManual) {
+            objetoDaClasseProdutos.setNomeDoProduto(jTxtNomeProduto.getText());
+            objetoDaClasseProdutos.setFabricanteDoProduto(jTxtFabricanteProduto.getText());
+            objetoDaClasseProdutos.setQuantidadeDoProduto(Float.valueOf(jTxtQuantidade.getText()));
+            objetoDaClasseProdutos.adicionarProdutoNaListaDeProdutosJáAdicinadosNaCompra();
+            if (objetoDaClasseProdutos.getAQuantidadeInformadaVaiResultarEmUmaQuantidadeMenorQueZero()) {
+                exibirMensagemDeQuantidadeInválida();
+            } else {
+                objetoDaClasseDefaultTableModel.setNumRows(0);
+                linhasDeProdutosNaLista = objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.size() / 3;
+                for (int i = 0; i < linhasDeProdutosNaLista; ++i) {
+                    objetoDaClasseDefaultTableModel.addRow(new Object[]{
+                        objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.get(i * 3),
+                        objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.get(i * 3 + 1),
+                        objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.get(i * 3 + 2)
+                    }
+                    );
                 }
-                );
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+
+        } else {
+            objetoDaClasseProdutos.setCodigoDoProduto(jTxtCodigoProduto.getText());
+            try {
+                objetoDaClasseProdutos.buscarProdutoNoBanco();
+                objetoDaClasseDefaultTableModel.setNumRows(0);
+                linhasDeProdutosNaLista = objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.size() / 3;
+                for (int i = 0; i < linhasDeProdutosNaLista; ++i) {
+                    objetoDaClasseDefaultTableModel.addRow(new Object[]{
+                        objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.get(i * 3),
+                        objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.get(i * 3 + 1),
+                        objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.get(i * 3 + 2)
+                    }
+                    );
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -276,14 +356,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         }
     }
 
-    private void exibirMensagemDeImpressão() {
-        if (JOptionPane.showConfirmDialog(this, "Deseja imprimir a lista de produtos?", "IMPRIMIR?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-            JOptionPane.showMessageDialog(this, "Arquivo enviado para a impressora!", "OPERAÇÃO CONCLUÍDA!", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(this, "Arquivo gerado!", "OPERAÇÃO CONCLUÍDA!", JOptionPane.INFORMATION_MESSAGE);
-            abrirArquivoGerado();
-            limparInformacoes();
-        }
+    private void exibirMensagemDeArquivoSalvo() {
+        JOptionPane.showMessageDialog(this, "O arquivo foi gerado e salvo!", "OPERAÇÃO CONCLUÍDA!", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void exibirMensagemDeCancelamento() {
@@ -295,11 +369,45 @@ public class TelaPrincipal extends javax.swing.JFrame {
         }
     }
 
+    private void exibirMensagemDeQuantidadeInválida() {
+        JOptionPane.showMessageDialog(this, "O número inserido no campo de quantidade é inválido! Por favor, revise as informações", "ALERTA!", 2);
+    }
+
+    private void ativarInsercaoManual() {
+        jTxtNomeProduto.setEnabled(true);
+        jTxtFabricanteProduto.setEnabled(true);
+        jTxtQuantidade.setEnabled(true);
+        jTxtNomeProduto.setVisible(true);
+        jTxtFabricanteProduto.setVisible(true);
+        jTxtQuantidade.setVisible(true);
+        jLabel4.setVisible(true);
+        jLabel5.setVisible(true);
+        jLabel6.setVisible(true);
+        jBtnInserir.setEnabled(true);
+        jBtnCancelarInsercaoManual.setEnabled(true);
+        jBtnInserir.setVisible(true);
+        jBtnCancelarInsercaoManual.setVisible(true);
+
+    }
+
+    private void desativarInsercaoManual() {
+        jTxtNomeProduto.setEnabled(false);
+        jTxtFabricanteProduto.setEnabled(false);
+        jTxtQuantidade.setEnabled(false);
+        jTxtNomeProduto.setVisible(false);
+        jTxtFabricanteProduto.setVisible(false);
+        jTxtQuantidade.setVisible(false);
+        jLabel4.setVisible(false);
+        jLabel5.setVisible(false);
+        jLabel6.setVisible(false);
+        jBtnInserir.setEnabled(false);
+        jBtnCancelarInsercaoManual.setEnabled(false);
+        jBtnInserir.setVisible(false);
+        jBtnCancelarInsercaoManual.setVisible(false);
+
+    }
     private void jBtnInserirManualmenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnInserirManualmenteActionPerformed
-        // CÓDIGO DO BOTÃO "INSERIR MANUALMENTE":
-        objetoDaTelaDeInsercaoManual = new TelaInsercaoManual();
-        objetoDaTelaDeInsercaoManual.setVisible(true);
-        this.setVisible(false);
+        ativarInsercaoManual();
     }//GEN-LAST:event_jBtnInserirManualmenteActionPerformed
 
     private void jBtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCancelarActionPerformed
@@ -330,7 +438,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
             } finally {
                 objetoDaClasseDocument.close();
             }
-            exibirMensagemDeImpressão();
+            exibirMensagemDeArquivoSalvo();
+            abrirArquivoGerado();
+            limparInformacoes();
         }
     }//GEN-LAST:event_jBtnSalvarActionPerformed
 
@@ -340,13 +450,40 @@ public class TelaPrincipal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Lamento, o CÓDIGO DO PRODUTO não foi informado!", "ALERTA!", 2);
         } else {
             try {
-                adicionarLinhaNaTabelaDoSistema();
+                adicionarLinhaNaTabelaDoSistema(false);
             } catch (SQLException erroAoAdicionarLinhaNaTabelaDoSistema) {
                 System.err.println("Problema ao tentar adicionar linha na tebela do sistema, ERRO: " + erroAoAdicionarLinhaNaTabelaDoSistema);
             }
             prepararSistemaParaAdicionarNovoProduto();
         }
     }//GEN-LAST:event_jTxtCodigoProdutoActionPerformed
+
+    private void jBtnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnInserirActionPerformed
+        if (jTxtNomeProduto.getText().equals("") || jTxtFabricanteProduto.getText().equals("") || jTxtQuantidade.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Lamento, as informações não estão completas!", "ALERTA!", 2);
+        } else {
+            try {
+                adicionarLinhaNaTabelaDoSistema(true);
+                desativarInsercaoManual();
+                limparCamposDaInsercaoManual();
+            } catch (SQLException erroAoAdicionarLinhaNaTabelaDoSistema) {
+                System.err.println("Problema ao tentar adicionar linha na tebela do sistema, ERRO: " + erroAoAdicionarLinhaNaTabelaDoSistema);
+            }
+        }
+    }//GEN-LAST:event_jBtnInserirActionPerformed
+    private void limparCamposDaInsercaoManual() {
+        jTxtNomeProduto.setText("");
+        jTxtFabricanteProduto.setText("");
+        jTxtQuantidade.setText("");
+    }
+    private void jBtnCancelarInsercaoManualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCancelarInsercaoManualActionPerformed
+        desativarInsercaoManual();
+        limparCamposDaInsercaoManual();
+    }//GEN-LAST:event_jBtnCancelarInsercaoManualActionPerformed
+
+    private void jTxtQuantidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtQuantidadeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTxtQuantidadeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -384,18 +521,25 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
     }
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBtnCancelar;
+    private javax.swing.JButton jBtnCancelarInsercaoManual;
+    private javax.swing.JButton jBtnInserir;
     private javax.swing.JButton jBtnInserirManualmente;
     private javax.swing.JButton jBtnSalvar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTbProdutos;
     private javax.swing.JTextField jTxtCodigoProduto;
+    private javax.swing.JTextField jTxtFabricanteProduto;
     private javax.swing.JTextField jTxtNomeCliente;
+    private javax.swing.JTextField jTxtNomeProduto;
+    private javax.swing.JTextField jTxtQuantidade;
     // End of variables declaration//GEN-END:variables
 }
