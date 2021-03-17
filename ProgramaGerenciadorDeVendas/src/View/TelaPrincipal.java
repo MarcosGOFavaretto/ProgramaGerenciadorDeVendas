@@ -391,6 +391,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Lamento, as informações não estão completas!", "ALERTA!", 2);
     }
 
+    private void exibirMensagemDeListaDeProdutosVazias() {
+        JOptionPane.showMessageDialog(this, "Lamento, não há produtos na lista, por favor, faça cadastros de novos!", "ALERTA!", 2);
+    }
+
     private void ativarInsercaoManual() {
         jTxtNomeProduto.setEnabled(true);
         jTxtFabricanteProduto.setEnabled(true);
@@ -429,15 +433,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jBtnInserirManualmenteActionPerformed
 
     private void jBtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCancelarActionPerformed
-        // CÓDIGO DO BOTÃO "CANCELAR":
         exibirMensagemDeCancelamento();
     }//GEN-LAST:event_jBtnCancelarActionPerformed
 
-    private void exibirMensagemDeListaDeProdutosVazias() {
-        JOptionPane.showMessageDialog(this, "Lamento, não há produtos na lista, por favor, faça cadastros de novos!", "ALERTA!", 2);
-    }
     private void jBtnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSalvarActionPerformed
-        // CÓDIGO DO BOTÃO "SALVAR":
         if (jTxtNomeCliente.getText().equals("")) {
             exibirMensagemDeNomeDeUsuarioAusente();
         } else {
@@ -470,7 +469,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jBtnSalvarActionPerformed
 
     private void jTxtCodigoProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtCodigoProdutoActionPerformed
-        // CÓDIGO DO CAMPO DE TEXTO "CÓDIGO DO PRODUTO":
         if (jTxtCodigoProduto.getText().equals("")) {
             exibirMensagemDeCodigoDoProdutoAusente();
         } else {
