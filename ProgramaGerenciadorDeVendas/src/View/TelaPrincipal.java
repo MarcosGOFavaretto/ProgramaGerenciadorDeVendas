@@ -361,16 +361,34 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     private void exibirMensagemDeCancelamento() {
-        if (JOptionPane.showConfirmDialog(this, "Deseja LIMPAR todos os campos da tela?") == JOptionPane.YES_OPTION) {
-            limparInformacoes();
-            JOptionPane.showMessageDialog(this, "Informações apagadas!", "OPERAÇÃO CONCLUÍDA!", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(this, "NENHUMA informação foi alterada!", "ALERTA!", 2);
+        int escolhaDoUsuario = JOptionPane.showConfirmDialog(this, "Deseja LIMPAR todos os campos da tela?", "OPERAÇÃO DE CANCELAMENTO",JOptionPane.YES_NO_OPTION);
+        switch (escolhaDoUsuario) {
+            case JOptionPane.YES_OPTION:
+                JOptionPane.showMessageDialog(this, "Informações apagadas!", "OPERAÇÃO CONCLUÍDA!", JOptionPane.INFORMATION_MESSAGE);
+                limparInformacoes();
+                break;
+            case JOptionPane.NO_OPTION:
+                JOptionPane.showMessageDialog(this, "NENHUMA informação foi alterada!", "ALERTA!", 2);
+                break;
+            case JOptionPane.CLOSED_OPTION:
+                break;
         }
     }
 
     private void exibirMensagemDeQuantidadeInválida() {
         JOptionPane.showMessageDialog(this, "O número inserido no campo de quantidade é inválido! Por favor, revise as informações", "ALERTA!", 2);
+    }
+
+    private void exibirMensagemDeNomeDeUsuarioAusente() {
+        JOptionPane.showMessageDialog(this, "Lamento, o NOME DO USUÁRIO não foi informado!", "ALERTA!", 2);
+    }
+
+    private void exibirMensagemDeCodigoDoProdutoAusente() {
+        JOptionPane.showMessageDialog(this, "Lamento, o CÓDIGO DO PRODUTO não foi informado!", "ALERTA!", 2);
+    }
+
+    private void exibirMensagemDeInformacoesAusentes() {
+        JOptionPane.showMessageDialog(this, "Lamento, as informações não estão completas!", "ALERTA!", 2);
     }
 
     private void ativarInsercaoManual() {
@@ -418,7 +436,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void jBtnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSalvarActionPerformed
         // CÓDIGO DO BOTÃO "SALVAR":
         if (jTxtNomeCliente.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Lamento, o NOME DO USUÁRIO não foi informado!", "ALERTA!", 2);
+            exibirMensagemDeNomeDeUsuarioAusente();
         } else {
             objetoDaClasseClientes.setNomeDoCliente(jTxtNomeCliente.getText());
             objetoDaClasseDocument = new Document();
@@ -447,7 +465,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void jTxtCodigoProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtCodigoProdutoActionPerformed
         // CÓDIGO DO CAMPO DE TEXTO "CÓDIGO DO PRODUTO":
         if (jTxtCodigoProduto.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Lamento, o CÓDIGO DO PRODUTO não foi informado!", "ALERTA!", 2);
+            exibirMensagemDeCodigoDoProdutoAusente();
         } else {
             try {
                 adicionarLinhaNaTabelaDoSistema(false);
@@ -460,7 +478,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void jBtnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnInserirActionPerformed
         if (jTxtNomeProduto.getText().equals("") || jTxtFabricanteProduto.getText().equals("") || jTxtQuantidade.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Lamento, as informações não estão completas!", "ALERTA!", 2);
+            exibirMensagemDeInformacoesAusentes();
         } else {
             try {
                 adicionarLinhaNaTabelaDoSistema(true);
