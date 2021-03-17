@@ -361,7 +361,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     private void exibirMensagemDeCancelamento() {
-        int escolhaDoUsuario = JOptionPane.showConfirmDialog(this, "Deseja LIMPAR todos os campos da tela?", "OPERAÇÃO DE CANCELAMENTO",JOptionPane.YES_NO_OPTION);
+        int escolhaDoUsuario = JOptionPane.showConfirmDialog(this, "Deseja LIMPAR todos os campos da tela?", "OPERAÇÃO DE CANCELAMENTO", JOptionPane.YES_NO_OPTION);
         switch (escolhaDoUsuario) {
             case JOptionPane.YES_OPTION:
                 JOptionPane.showMessageDialog(this, "Informações apagadas!", "OPERAÇÃO CONCLUÍDA!", JOptionPane.INFORMATION_MESSAGE);
@@ -433,32 +433,39 @@ public class TelaPrincipal extends javax.swing.JFrame {
         exibirMensagemDeCancelamento();
     }//GEN-LAST:event_jBtnCancelarActionPerformed
 
+    private void exibirMensagemDeListaDeProdutosVazias() {
+        JOptionPane.showMessageDialog(this, "Lamento, não há produtos na lista, por favor, faça cadastros de novos!", "ALERTA!", 2);
+    }
     private void jBtnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSalvarActionPerformed
         // CÓDIGO DO BOTÃO "SALVAR":
         if (jTxtNomeCliente.getText().equals("")) {
             exibirMensagemDeNomeDeUsuarioAusente();
         } else {
-            objetoDaClasseClientes.setNomeDoCliente(jTxtNomeCliente.getText());
-            objetoDaClasseDocument = new Document();
-            criarNomeDoArquivo();
-            criarCabecalhoDoArquivo();
-            try {
-                PdfWriter.getInstance(objetoDaClasseDocument, new FileOutputStream(nomeDoArquivo));
-                objetoDaClasseDocument.open();
-                adicionarMetadadosAoArquivo();
-                adicionarCabecalhoComEspacamentoAoArquivo();
-                criarCabecalhoDaTabelaDoArquivo();
-                inserirDadosDaTabelaDoArquivo();
-                adicionarTabelaDeDadosAoArquivo();
-                adicionarRodapeAoArquivo();
-            } catch (FileNotFoundException | DocumentException erroAoGerarArquivo) {
-                System.err.println("Problema ao tentar gerar o arquivo PDF, ERRO: " + erroAoGerarArquivo);
-            } finally {
-                objetoDaClasseDocument.close();
+            if (objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.isEmpty()) {
+                exibirMensagemDeListaDeProdutosVazias();
+            } else {
+                objetoDaClasseClientes.setNomeDoCliente(jTxtNomeCliente.getText());
+                objetoDaClasseDocument = new Document();
+                criarNomeDoArquivo();
+                criarCabecalhoDoArquivo();
+                try {
+                    PdfWriter.getInstance(objetoDaClasseDocument, new FileOutputStream(nomeDoArquivo));
+                    objetoDaClasseDocument.open();
+                    adicionarMetadadosAoArquivo();
+                    adicionarCabecalhoComEspacamentoAoArquivo();
+                    criarCabecalhoDaTabelaDoArquivo();
+                    inserirDadosDaTabelaDoArquivo();
+                    adicionarTabelaDeDadosAoArquivo();
+                    adicionarRodapeAoArquivo();
+                } catch (FileNotFoundException | DocumentException erroAoGerarArquivo) {
+                    System.err.println("Problema ao tentar gerar o arquivo PDF, ERRO: " + erroAoGerarArquivo);
+                } finally {
+                    objetoDaClasseDocument.close();
+                }
+                exibirMensagemDeArquivoSalvo();
+                abrirArquivoGerado();
+                limparInformacoes();
             }
-            exibirMensagemDeArquivoSalvo();
-            abrirArquivoGerado();
-            limparInformacoes();
         }
     }//GEN-LAST:event_jBtnSalvarActionPerformed
 
