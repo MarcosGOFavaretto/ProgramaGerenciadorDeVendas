@@ -70,7 +70,10 @@ public class ClasseProdutos {
         }
     }
 
-    public void adicionarProdutoNaListaDeProdutosJáAdicinadosNaCompra() {
+    public void adicionarProdutoNaListaDeProdutosJáAdicinadosNaCompra(String nomeDoProduto, String fabricanteDoProduto, Float quantidade) {
+        setNomeDoProduto(nomeDoProduto);
+        setFabricanteDoProduto(fabricanteDoProduto);
+        setQuantidadeDoProduto(quantidade);
         boolean produtoExisteNalista = false;
         for (int i = 0; i < listaDeProdutosJaAdicionadosNaCompra.size(); i++) {
             if (listaDeProdutosJaAdicionadosNaCompra.get(i).equals(getNomeDoProduto()) && listaDeProdutosJaAdicionadosNaCompra.get(i + 1).equals(getFabricanteDoProduto())) {
