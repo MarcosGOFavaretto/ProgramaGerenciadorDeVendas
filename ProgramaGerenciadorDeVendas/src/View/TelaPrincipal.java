@@ -1,6 +1,5 @@
 package View;
 
-import Controller.ClasseClientes;
 import Controller.ClasseProdutos;
 import Controller.ClasseRelatorio;
 import java.sql.SQLException;
@@ -13,7 +12,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     DefaultTableModel objetoDaClasseDefaultTableModel;
     ClasseProdutos objetoDaClasseProdutos;
-    ClasseClientes objetoDaClasseClientes;
     ClasseRelatorio objetoDaClasseRelatorio;
     int linhasDeProdutosNaLista = 0;
 
@@ -188,9 +186,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         if (objetoDaClasseProdutos == null) {
             objetoDaClasseProdutos = new ClasseProdutos();
         }
-        if (objetoDaClasseClientes == null) {
-            objetoDaClasseClientes = new ClasseClientes();
-        }
+
         if (objetoDaClasseRelatorio == null) {
             objetoDaClasseRelatorio = new ClasseRelatorio();
         }
@@ -250,18 +246,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
                     }
                     );
                 }
-            } catch (SQLException ex) {
-                Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException erroAoAdicionarLinhaNaTabelaDoSistema) {
+                System.err.println("Problema ao tentar adicionar uma nova linha na tabela do sistema, ERRO: " + erroAoAdicionarLinhaNaTabelaDoSistema);
             }
         }
     }
 
     private void exibirMensagemDeArquivoSalvo() {
         JOptionPane.showMessageDialog(this, "O arquivo foi gerado e salvo!", "OPERAÇÃO CONCLUÍDA!", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    private void exibirMensagemDeArquivoNãoSalvo() {
-        JOptionPane.showMessageDialog(this, "Lamento, algum erro ocorreu, o arquivo não foi salvo!", "ALERTA!", 2);
     }
 
     private void exibirMensagemDeCancelamento() {

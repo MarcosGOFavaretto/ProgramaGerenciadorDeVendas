@@ -23,7 +23,6 @@ public class ClasseRelatorio {
     private String nomeDoCliente;
     private ArrayList<String> listaDeProdutosJaAdicionadosNaCompra;
     ClasseProdutos objetoDaClasseProdutos;
-    ClasseClientes objetoDaClasseClientes;
     Document objetoDaClasseDocument = null;
     Paragraph objeto_Paragraph_Cabecalho = null;
     Font objeto_Font_Cabecalho = new Font(Font.FontFamily.TIMES_ROMAN, 20, Font.BOLD);
@@ -58,7 +57,7 @@ public class ClasseRelatorio {
     }
 
     private void criarNomeDoArquivo() {
-        //nomeDoArquivo = mascaraDataAtual.format(dataAtual) + " - " + getNomeDoCliente() + ".pdf";
+        nomeDoArquivo = mascaraDataAtual.format(dataAtual) + " - " + getNomeDoCliente() + ".pdf";
     }
 
     private void criarCabecalhoDoArquivo() {
@@ -136,12 +135,12 @@ public class ClasseRelatorio {
     public void gerarRelatorio(String nomeDoCliente, ArrayList<String> listaDeProdutosJaAdicionadosNaCompra) {
         try {
             objetoDaClasseDocument = new Document();
+            setNomeDoCliente(nomeDoCliente);
+            setListaDeProdutosJaAdicionadosNaCompra(listaDeProdutosJaAdicionadosNaCompra);
             obterDataAtual();
             criarNomeDoArquivo();
             PdfWriter.getInstance(objetoDaClasseDocument, new FileOutputStream(nomeDoArquivo));
             objetoDaClasseDocument.open();
-            setNomeDoCliente(nomeDoCliente);
-            setListaDeProdutosJaAdicionadosNaCompra(listaDeProdutosJaAdicionadosNaCompra);
             adicionarMetadadosAoArquivo();
             criarCabecalhoDoArquivo();
             adicionarCabecalhoComEspacamentoAoArquivo();
