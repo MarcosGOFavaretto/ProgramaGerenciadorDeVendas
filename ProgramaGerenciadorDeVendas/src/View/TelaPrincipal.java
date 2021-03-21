@@ -205,37 +205,32 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void adicionarLinhaNaTabelaDoSistema(boolean seTrataDeUmaInsercaoManual) throws SQLException {
         if (seTrataDeUmaInsercaoManual) {
             objetoDaClasseProdutos.adicionarProdutoNaListaDeProdutosJáAdicinadosNaCompra(jTxtNomeProduto.getText(), jTxtFabricanteProduto.getText(), Float.valueOf(jTxtQuantidade.getText()));
-            if (objetoDaClasseProdutos.getAQuantidadeInformadaVaiResultarEmUmaQuantidadeMenorQueZero()) {
+            if (objetoDaClasseProdutos.isQuantidadeInformadaVaiResultarEmUmaQuantidadeMenorQueZero()) {
                 exibirMensagemDeQuantidadeInválida();
             } else {
-                objetoDaClasseDefaultTableModel.setNumRows(0);
-                linhasDeProdutosNaLista = objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.size() / 3;
-                for (int i = 0; i < linhasDeProdutosNaLista; ++i) {
-                    objetoDaClasseDefaultTableModel.addRow(new Object[]{
-                        objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.get(i * 3),
-                        objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.get(i * 3 + 1),
-                        objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.get(i * 3 + 2)
-                    }
-                    );
-                }
+                adicionarListaDeComprasNaTabelaDoSistema();
             }
         } else {
             objetoDaClasseProdutos.setCodigoDoProduto(jTxtCodigoProduto.getText());
             try {
                 objetoDaClasseProdutos.buscarProdutoNoBanco();
-                objetoDaClasseDefaultTableModel.setNumRows(0);
-                linhasDeProdutosNaLista = objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.size() / 3;
-                for (int i = 0; i < linhasDeProdutosNaLista; ++i) {
-                    objetoDaClasseDefaultTableModel.addRow(new Object[]{
-                        objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.get(i * 3),
-                        objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.get(i * 3 + 1),
-                        objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.get(i * 3 + 2)
-                    }
-                    );
-                }
+                adicionarListaDeComprasNaTabelaDoSistema();
             } catch (SQLException erroAoAdicionarLinhaNaTabelaDoSistema) {
                 System.err.println("Problema ao tentar adicionar uma nova linha na tabela do sistema, ERRO: " + erroAoAdicionarLinhaNaTabelaDoSistema);
             }
+        }
+    }
+
+    private void adicionarListaDeComprasNaTabelaDoSistema() {
+        objetoDaClasseDefaultTableModel.setNumRows(0);
+        linhasDeProdutosNaLista = objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.size() / 3;
+        for (int i = 0; i < linhasDeProdutosNaLista; ++i) {
+            objetoDaClasseDefaultTableModel.addRow(new Object[]{
+                objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.get(i * 3),
+                objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.get(i * 3 + 1),
+                objetoDaClasseProdutos.listaDeProdutosJaAdicionadosNaCompra.get(i * 3 + 2)
+            }
+            );
         }
     }
 
@@ -282,14 +277,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jTxtNomeProduto.setEnabled(true);
         jTxtFabricanteProduto.setEnabled(true);
         jTxtQuantidade.setEnabled(true);
-        jTxtNomeProduto.setVisible(true);
-        jTxtFabricanteProduto.setVisible(true);
-        jTxtQuantidade.setVisible(true);
+        jBtnInserir.setEnabled(true);
+        jBtnCancelarInsercaoManual.setEnabled(true);
         jLabel4.setVisible(true);
         jLabel5.setVisible(true);
         jLabel6.setVisible(true);
-        jBtnInserir.setEnabled(true);
-        jBtnCancelarInsercaoManual.setEnabled(true);
+        jTxtNomeProduto.setVisible(true);
+        jTxtFabricanteProduto.setVisible(true);
+        jTxtQuantidade.setVisible(true);
         jBtnInserir.setVisible(true);
         jBtnCancelarInsercaoManual.setVisible(true);
     }
@@ -298,14 +293,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jTxtNomeProduto.setEnabled(false);
         jTxtFabricanteProduto.setEnabled(false);
         jTxtQuantidade.setEnabled(false);
-        jTxtNomeProduto.setVisible(false);
-        jTxtFabricanteProduto.setVisible(false);
-        jTxtQuantidade.setVisible(false);
+        jBtnInserir.setEnabled(false);
+        jBtnCancelarInsercaoManual.setEnabled(false);
         jLabel4.setVisible(false);
         jLabel5.setVisible(false);
         jLabel6.setVisible(false);
-        jBtnInserir.setEnabled(false);
-        jBtnCancelarInsercaoManual.setEnabled(false);
+        jTxtNomeProduto.setVisible(false);
+        jTxtFabricanteProduto.setVisible(false);
+        jTxtQuantidade.setVisible(false);
         jBtnInserir.setVisible(false);
         jBtnCancelarInsercaoManual.setVisible(false);
     }

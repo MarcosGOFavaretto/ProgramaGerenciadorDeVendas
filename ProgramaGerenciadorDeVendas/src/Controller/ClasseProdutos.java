@@ -11,10 +11,10 @@ public class ClasseProdutos {
     private String nomeDoProduto;
     private String fabricanteDoProduto;
     private float quantidadeDoProduto;
+    private boolean quantidadeInformadaVaiResultarEmUmaQuantidadeMenorQueZero;
     private ResultSet resultadoDaBuscaPeloProdutoNoBancoDeDados;
-    private BuscarProdutoNoBancoDeDados objetoDaClasseBuscarProduto = new BuscarProdutoNoBancoDeDados();
     public ArrayList<String> listaDeProdutosJaAdicionadosNaCompra = new ArrayList();
-    private boolean aQuantidadeInformadaVaiResultarEmUmaQuantidadeMenorQueZero;
+    private BuscarProdutoNoBancoDeDados objetoDaClasseBuscarProduto = new BuscarProdutoNoBancoDeDados();
 
     public String getCodigoDoProduto() {
         return codigoDoProduto;
@@ -32,8 +32,8 @@ public class ClasseProdutos {
         return quantidadeDoProduto;
     }
 
-    public boolean getAQuantidadeInformadaVaiResultarEmUmaQuantidadeMenorQueZero() {
-        return aQuantidadeInformadaVaiResultarEmUmaQuantidadeMenorQueZero;
+    public boolean isQuantidadeInformadaVaiResultarEmUmaQuantidadeMenorQueZero() {
+        return quantidadeInformadaVaiResultarEmUmaQuantidadeMenorQueZero;
     }
 
     public void setCodigoDoProduto(String codigoDoProduto) {
@@ -80,9 +80,9 @@ public class ClasseProdutos {
                 produtoExisteNalista = true;
                 i = i + 2;
                 if (getQuantidadeDoProduto() < -Float.valueOf(listaDeProdutosJaAdicionadosNaCompra.get(i))) {
-                    aQuantidadeInformadaVaiResultarEmUmaQuantidadeMenorQueZero = true;
+                    quantidadeInformadaVaiResultarEmUmaQuantidadeMenorQueZero = true;
                 } else {
-                    aQuantidadeInformadaVaiResultarEmUmaQuantidadeMenorQueZero = false;
+                    quantidadeInformadaVaiResultarEmUmaQuantidadeMenorQueZero = false;
                     float valorDaQuantidade = Float.valueOf(listaDeProdutosJaAdicionadosNaCompra.get(i)) + getQuantidadeDoProduto();
                     if (valorDaQuantidade <= 0) {
                         listaDeProdutosJaAdicionadosNaCompra.remove(i - 2);
